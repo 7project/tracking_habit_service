@@ -1,0 +1,3 @@
+
+class TokenInfo:
+    pass

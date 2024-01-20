@@ -16,6 +16,7 @@ psycopg2 = "^2.9.9"
 asyncpg = "^0.29.0"
 envparse = "^0.2.0"
 SQLAlchemy = "^2.0.25"
+pyjwt = "^2.8.0"
 
 
 [build-system]

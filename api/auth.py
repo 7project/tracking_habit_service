@@ -9,7 +9,7 @@ from models.db_main import db_main
 from models.user import User, Habit, HabitTracking
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from service.jwt import encode_jwt, decode_jwt, validate_password
+from services.jwt import encode_jwt, decode_jwt, validate_password
 from schema.jwt import TokenInfo
 from schema.user import UserSchema, HabitSchemy, HabitTrackingSchema, UserOut
 
