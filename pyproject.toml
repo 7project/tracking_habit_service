@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "tracking-habit-service"
+version = "0.1.0"
+description = "Service for tracking good habits."
+authors = ["User <housechel@mail.ru>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.109.0"
+uvicorn = "^0.26.0"
+alembic = "^1.13.1"
+pydantic = "^2.5.3"
+psycopg2 = "^2.9.9"
+asyncpg = "^0.29.0"
+envparse = "^0.2.0"
+SQLAlchemy = "^2.0.25"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
