@@ -1,8 +1,11 @@
-class CreateUser:
+from pydantic import BaseModel
+
+
+class CreateUser(BaseModel):
     ...
 
 
-class User:
+class User(BaseModel):
     ...
 
 
@@ -10,18 +13,20 @@ class UserBase:
     ...
 
 
-class UserSchema:
+class UserSchema(BaseModel):
+    name: str
+    telegram_id: int
+    is_active: bool
+
+
+class HabitSchemy(BaseModel):
     ...
 
 
-class HabitSchemy:
+class HabitTrackingSchema(BaseModel):
     ...
 
 
-class HabitTrackingSchema:
-    ...
-
-
-class UserOut:
+class UserOut(BaseModel):
     ...
 
