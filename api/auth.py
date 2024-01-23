@@ -40,7 +40,7 @@ async def validate_auth_user(
 
     if not validate_password(
             password=password,
-            hashes_password=user.password):
+            hashed_password=user.password):
         raise unauthorized_exp
 
     if not user.is_active:
