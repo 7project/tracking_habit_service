@@ -18,6 +18,7 @@ envparse = "^0.2.0"
 SQLAlchemy = "^2.0.25"
 pyjwt = "^2.8.0"
 bcrypt = "^4.1.2"
+python-multipart = "^0.0.6"
 
 
 [build-system]
