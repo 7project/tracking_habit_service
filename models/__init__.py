@@ -1,4 +1,4 @@
-__all__ = ('User', 'Habit', 'HabitTracking', 'UserBase', 'Database', 'db_main')
+__all__ = ('UserBase', 'User', 'Habit', 'HabitTracking', 'Database', 'db_main')
 
 
 from .user import User, Habit, HabitTracking
