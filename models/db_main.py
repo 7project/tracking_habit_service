@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from settings import DATABASE_URL
 
 
@@ -8,12 +8,16 @@ class Database:
             url=DATABASE_URL,
             echo=False,
         )
-        self.session_dependency = async_sessionmaker(
+        self.async_session = async_sessionmaker(
             bind=self.engine,
             autoflush=False,
             autocommit=False,
             expire_on_commit=False,
         )
+
+    async def session_dependency(self) -> AsyncSession:
+        async with self.async_session() as session:
+            yield session
 
 
 db_main = Database()
