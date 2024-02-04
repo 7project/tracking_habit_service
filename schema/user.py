@@ -1,16 +1,26 @@
+import datetime
+
 from pydantic import BaseModel, Field
 
 
-class HabitSchemy(BaseModel):
-    ...
+class UserOut(BaseModel):
+    name: str
+    telegram_id: int
+    is_active: bool
 
 
 class HabitTrackingSchema(BaseModel):
-    ...
+    habit_id: int
+    alert_time: datetime.datetime
+    count: int
 
 
-class UserOut(BaseModel):
-    ...
+class HabitSchemy(BaseModel):
+    user_id: int
+    name_habit: str
+    description: str
+    user: UserOut
+    tracking: HabitTrackingSchema
 
 
 class UserBase(BaseModel):
