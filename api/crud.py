@@ -60,6 +60,7 @@ async def get_habits_for_user_id(session, user_id):
     statement = (select(Habit)
                  .options(selectinload(Habit.tracking),)
                  .where(Habit.user_id == user_id))
+
     result: Result = await session.execute(statement)
     habits = result.scalars()
 
@@ -76,6 +77,7 @@ async def get_habit_tracking_for_habit_id(session, habit_id):
     )
     statement = (select(HabitTracking)
                  .where(HabitTracking.habit_id == habit_id))
+
     result: Result = await session.execute(statement)
     habit_tracking = result.scalar_one_or_none()
 
