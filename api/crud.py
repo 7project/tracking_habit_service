@@ -34,8 +34,19 @@ async def create_user(user_in: CreateUser, session: AsyncSession):
     return user
 
 
-async def get_user_to_telegram_id(session, telegram_id):
-    ...
+async def get_user_to_telegram_id(session: AsyncSession, telegram_id: int):
+    unauthorized_exp = HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail="Invalid request"
+    )
+    statement = select(User).where(User.telegram_id == telegram_id)
+    result: Result = await session.execute(statement)
+    user = result.scalar_one_or_none()
+
+    if user is not None:
+        raise unauthorized_exp
+
+    return user
 
 
 async def get_habits_for_user_id(session, user_id):
