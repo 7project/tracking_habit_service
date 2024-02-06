@@ -36,7 +36,7 @@ async def create_user(user_in: CreateUser, session: AsyncSession):
     return user
 
 
-async def get_user_to_telegram_id(session: AsyncSession, telegram_id: int):
+async def get_user_to_telegram_id(session: AsyncSession, telegram_id):
     unauthorized_exp = HTTPException(
         status_code=status.HTTP_409_CONFLICT,
         detail="Invalid request get_user_to_telegram_id"
@@ -44,10 +44,9 @@ async def get_user_to_telegram_id(session: AsyncSession, telegram_id: int):
     statement = select(User).where(User.telegram_id == telegram_id)
     result: Result = await session.execute(statement)
     user = result.scalar_one_or_none()
-    print(user)
+
     if user is None:
         raise unauthorized_exp.detail
-
     return user
 
 
