@@ -39,14 +39,14 @@ async def create_user(user_in: CreateUser, session: AsyncSession):
 async def get_user_to_telegram_id(session: AsyncSession, telegram_id: int):
     unauthorized_exp = HTTPException(
         status_code=status.HTTP_409_CONFLICT,
-        detail="Invalid request"
+        detail="Invalid request get_user_to_telegram_id"
     )
     statement = select(User).where(User.telegram_id == telegram_id)
     result: Result = await session.execute(statement)
     user = result.scalar_one_or_none()
-
-    if user is not None:
-        raise unauthorized_exp
+    print(user)
+    if user is None:
+        raise unauthorized_exp.detail
 
     return user
 
@@ -55,7 +55,7 @@ async def get_habits_for_user_id(session, user_id):
 
     unauthorized_exp = HTTPException(
         status_code=status.HTTP_409_CONFLICT,
-        detail="Invalid request"
+        detail="not data get_habits_for_user_id"
     )
     statement = (select(Habit)
                  .options(selectinload(Habit.tracking),)
@@ -63,8 +63,8 @@ async def get_habits_for_user_id(session, user_id):
 
     result: Result = await session.execute(statement)
     habits = result.scalars()
-
-    if habits is not None:
+    print(habits)
+    if habits is None:
         raise unauthorized_exp
 
     return habits
@@ -73,7 +73,7 @@ async def get_habits_for_user_id(session, user_id):
 async def get_habit_tracking_for_habit_id(session, habit_id):
     unauthorized_exp = HTTPException(
         status_code=status.HTTP_409_CONFLICT,
-        detail="Invalid request"
+        detail="not data get_habit_tracking_for_habit_id"
     )
     statement = (select(HabitTracking)
                  .where(HabitTracking.habit_id == habit_id))
@@ -81,7 +81,7 @@ async def get_habit_tracking_for_habit_id(session, habit_id):
     result: Result = await session.execute(statement)
     habit_tracking = result.scalar_one_or_none()
 
-    if habit_tracking is not None:
+    if habit_tracking is None:
         raise unauthorized_exp
 
     return habit_tracking

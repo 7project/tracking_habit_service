@@ -1,5 +1,6 @@
 import bcrypt
 import jwt
+from jwcrypto import jwk
 
 from settings import path_private_key, path_public_key, algorithm, expire_minutes
 from datetime import datetime, timedelta
@@ -7,7 +8,7 @@ from datetime import datetime, timedelta
 
 def encode_jwt(
         payload: dict,
-        private_key: str = path_private_key,
+        private_key_path: str = path_private_key,
         algorithm_: str = algorithm,
         expire_minutes_: int = expire_minutes,
         expire_timedelta: timedelta | None = None,
@@ -23,6 +24,12 @@ def encode_jwt(
         iat=now,
         exp=expire,
     )
+
+    with open(private_key_path, "rb") as pemfile:
+        private_key = jwk.JWK.from_pem(pemfile.read())
+
+    print(private_key)
+    print(algorithm_)
     encoded = jwt.encode(
         to_encode,
         private_key,
