@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 def encode_jwt(
         payload: dict,
-        private_key_path: str = path_private_key,
+        private_key: str = path_private_key.read_text(),
         algorithm_: str = algorithm,
         expire_minutes_: int = expire_minutes,
         expire_timedelta: timedelta | None = None,
@@ -25,11 +25,9 @@ def encode_jwt(
         exp=expire,
     )
 
-    with open(private_key_path, "rb") as pemfile:
-        private_key = jwk.JWK.from_pem(pemfile.read())
-
     print(private_key)
     print(algorithm_)
+
     encoded = jwt.encode(
         to_encode,
         private_key,
@@ -40,9 +38,10 @@ def encode_jwt(
 
 def decode_jwt(
     token: str | bytes,
-    public_key: str = path_public_key,
+    public_key: str = path_public_key.read_text(),
     algorithm_: str = algorithm,
 ) -> dict:
+
     decoded = jwt.decode(
         token,
         public_key,
