@@ -30,6 +30,10 @@ class HabitSchemy(BaseModel):
     tracking: HabitTrackingSchema
 
 
+class DeleteHabitSchemy(BaseModel):
+    habit_id: int
+
+
 class CreateHabitSchemy(BaseModel):
     user_id: int
     name_habit: str

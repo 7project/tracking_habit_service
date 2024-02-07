@@ -11,7 +11,8 @@ from models.user import User, Habit, HabitTracking
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.jwt import encode_jwt, decode_jwt, validate_password
 from schema.jwt import TokenInfo
-from schema.user import UserSchema, HabitSchemy, HabitTrackingSchema, UserOut, CreateHabitSchemy, OutHabitSchemy
+from schema.user import UserSchema, HabitSchemy, HabitTrackingSchema, UserOut, CreateHabitSchemy, OutHabitSchemy, \
+    DeleteHabitSchemy
 
 from typing import TYPE_CHECKING, List
 
@@ -128,6 +129,19 @@ async def auth_user_cheek_me_info(
     )
 
     return habit
+
+
+@router.delete("/habit/delete", status_code=status.HTTP_204_NO_CONTENT)
+async def auth_user_cheek_me_info(
+        habit: DeleteHabitSchemy,
+        user: User = Depends(get_current_active_auth_user),
+        session: AsyncSession = Depends(db_main.session_dependency)
+):
+    await crud.delete_habit(
+        session=session,
+        user_in=user,
+        habit=habit,
+    )
 
 
 @router.get("/user/me/habits", response_model=List[HabitSchemy])

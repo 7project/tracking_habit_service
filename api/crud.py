@@ -5,7 +5,7 @@ from sqlalchemy import select, Result
 from sqlalchemy.orm import selectinload
 from models import User, Habit, HabitTracking
 from fastapi import status
-from schema.user import CreateUser, HabitSchemy, CreateHabitSchemy, UserOut, HabitTrackingSchema
+from schema.user import CreateUser, HabitSchemy, CreateHabitSchemy, UserOut, HabitTrackingSchema, DeleteHabitSchemy
 from services.jwt import hash_password
 from fastapi.exceptions import HTTPException
 
@@ -58,6 +58,30 @@ async def create_habit(user_in: User, session: AsyncSession, habit: CreateHabitS
     await session.refresh(habit_)
 
     return habit_
+
+
+async def delete_habit(user_in: User, session: AsyncSession, habit: DeleteHabitSchemy):
+    statement = select(Habit).where(Habit.id == habit.habit_id)
+    result: Result = await session.execute(statement)
+    habit_ = result.scalar_one_or_none()
+
+    unauthorized_exp = HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Invalid delete_habit"
+    )
+    print(habit_)
+    if habit_ is None:
+        raise unauthorized_exp.detail
+
+    statement2 = select(HabitTracking).where(HabitTracking.habit_id == habit.habit_id)
+    result2: Result = await session.execute(statement2)
+    tracking = result2.scalar_one_or_none()
+    await session.delete(tracking)
+
+    await session.delete(habit_)
+    await session.commit()
+    print('>>>>>', habit_)
+
 
 
 async def get_user_to_telegram_id(session: AsyncSession, telegram_id):
