@@ -11,7 +11,7 @@ from models.user import User, Habit, HabitTracking
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.jwt import encode_jwt, decode_jwt, validate_password
 from schema.jwt import TokenInfo
-from schema.user import UserSchema, HabitSchemy, HabitTrackingSchema, UserOut
+from schema.user import UserSchema, HabitSchemy, HabitTrackingSchema, UserOut, CreateHabitSchemy, OutHabitSchemy
 
 from typing import TYPE_CHECKING, List
 
@@ -113,6 +113,21 @@ async def auth_user_cheek_me_info(
         user: UserSchema = Depends(get_current_active_auth_user),
 ):
     return user
+
+
+@router.post("/habit/create", response_model=OutHabitSchemy)
+async def auth_user_cheek_me_info(
+        habit: CreateHabitSchemy,
+        user: User = Depends(get_current_active_auth_user),
+        session: AsyncSession = Depends(db_main.session_dependency)
+):
+    habit = await crud.create_habit(
+        session=session,
+        user_in=user,
+        habit=habit,
+    )
+
+    return habit
 
 
 @router.get("/user/me/habits", response_model=List[HabitSchemy])

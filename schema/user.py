@@ -15,12 +15,25 @@ class HabitTrackingSchema(BaseModel):
     count: int
 
 
+class OutHabitSchemy(BaseModel):
+    user_id: int
+    name_habit: str
+    description: str
+    user: UserOut
+
+
 class HabitSchemy(BaseModel):
     user_id: int
     name_habit: str
     description: str
     user: UserOut
     tracking: HabitTrackingSchema
+
+
+class CreateHabitSchemy(BaseModel):
+    user_id: int
+    name_habit: str
+    description: str
 
 
 class UserBase(BaseModel):

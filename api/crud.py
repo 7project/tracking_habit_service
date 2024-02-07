@@ -1,10 +1,11 @@
+import datetime
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Result
 from sqlalchemy.orm import selectinload
-
 from models import User, Habit, HabitTracking
 from fastapi import status
-from schema.user import CreateUser
+from schema.user import CreateUser, HabitSchemy, CreateHabitSchemy, UserOut, HabitTrackingSchema
 from services.jwt import hash_password
 from fastapi.exceptions import HTTPException
 
@@ -36,6 +37,29 @@ async def create_user(user_in: CreateUser, session: AsyncSession):
     return user
 
 
+async def create_habit(user_in: User, session: AsyncSession, habit: CreateHabitSchemy):
+
+    habit_ = Habit(
+        user_id=user_in.id,
+        name_habit=habit.name_habit,
+        description=habit.description,
+        user=user_in,
+
+        )
+    tracking = HabitTracking(
+            habit_id=habit_.id,
+            alert_time=datetime.datetime.utcnow(),
+            count=0)
+
+    habit_.tracking = tracking
+
+    session.add(habit_)
+    await session.commit()
+    await session.refresh(habit_)
+
+    return habit_
+
+
 async def get_user_to_telegram_id(session: AsyncSession, telegram_id):
     unauthorized_exp = HTTPException(
         status_code=status.HTTP_409_CONFLICT,
@@ -51,13 +75,12 @@ async def get_user_to_telegram_id(session: AsyncSession, telegram_id):
 
 
 async def get_habits_for_user_id(session, user_id):
-
     unauthorized_exp = HTTPException(
         status_code=status.HTTP_409_CONFLICT,
         detail="not data get_habits_for_user_id"
     )
     statement = (select(Habit)
-                 .options(selectinload(Habit.tracking),)
+                 .options(selectinload(Habit.tracking), )
                  .where(Habit.user_id == user_id))
 
     result: Result = await session.execute(statement)
