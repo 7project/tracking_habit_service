@@ -27,8 +27,7 @@ class Habit(UserBase):
     # TODO https://docs.sqlalchemy.org/en/20/orm/extensions/associationproxy.html#
     tracking: Mapped["HabitTracking"] = relationship(back_populates="habit")
 
-    # TODO если добавить self.tracking код подает
-    # TODO сделать его associationproxy?
+    # TODO сделать self.tracking его associationproxy?
     def __repr__(self):
         return (f"<Habit user_id={self.user_id} name_habit={self.name_habit} "
                 f"description={self.description} "

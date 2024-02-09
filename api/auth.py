@@ -6,7 +6,7 @@ from fastapi.exceptions import HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from models.db_main import db_main
-from models.user import User, Habit, HabitTracking
+from models.user import User
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.jwt import encode_jwt, decode_jwt, validate_password

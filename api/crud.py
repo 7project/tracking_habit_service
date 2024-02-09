@@ -1,13 +1,13 @@
 import datetime
-
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, Result
-from sqlalchemy.orm import selectinload
-from models import User, Habit, HabitTracking
 from fastapi import status
-from schema.user import CreateUser, HabitSchemy, CreateHabitSchemy, UserOut, HabitTrackingSchema, DeleteHabitSchemy
-from services.jwt import hash_password
+from models import User, Habit, HabitTracking
+from sqlalchemy import select, Result
+
 from fastapi.exceptions import HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
+from schema.user import CreateUser, CreateHabitSchemy, DeleteHabitSchemy
+from services.jwt import hash_password
 
 
 async def create_user(user_in: CreateUser, session: AsyncSession):
@@ -61,6 +61,7 @@ async def create_habit(user_in: User, session: AsyncSession, habit: CreateHabitS
 
 
 async def delete_habit(user_in: User, session: AsyncSession, habit: DeleteHabitSchemy):
+    print('>>> ', user_in)
     statement = select(Habit).where(Habit.id == habit.habit_id)
     result: Result = await session.execute(statement)
     habit_ = result.scalar_one_or_none()
@@ -69,7 +70,7 @@ async def delete_habit(user_in: User, session: AsyncSession, habit: DeleteHabitS
         status_code=status.HTTP_404_NOT_FOUND,
         detail="Invalid delete_habit"
     )
-    print(habit_)
+
     if habit_ is None:
         raise unauthorized_exp.detail
 
@@ -80,8 +81,6 @@ async def delete_habit(user_in: User, session: AsyncSession, habit: DeleteHabitS
 
     await session.delete(habit_)
     await session.commit()
-    print('>>>>>', habit_)
-
 
 
 async def get_user_to_telegram_id(session: AsyncSession, telegram_id):
