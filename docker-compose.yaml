@@ -27,7 +27,7 @@ services:
  bot:
    container_name: "bot"
    build: ./bot
-   command: python main.py
+   command: python main_send_message_bot.py
    restart: always
    environment:
      - BOT_TOKEN=${BOT_TOKEN}
