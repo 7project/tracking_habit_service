@@ -2,7 +2,7 @@ FROM debian
 
 WORKDIR /code
 
-RUN apt-get update && apt install -y python3-dev curl cron
+RUN apt-get update && apt install -y python3-dev pip
 RUN pip install --upgrade pip
 
 ADD . /code
