@@ -37,13 +37,16 @@ services:
      - fastapi
    networks:
      - backend
- systemd:
-   container_name: "systemd"
-   build: ./systemd
+ supervisor:
+   container_name: "supervisor"
+   build: ./supervisor
+   command: supervisord -c main_send_message_bot.conf
    ports:
      - "8880:8880"
    depends_on:
-     - bot
+     - fastapi
+   volumes:
+     - ./supervisor/logs:/code/logs
    networks:
      - backend
 
@@ -54,4 +57,6 @@ networks:
 
 volumes:
  db:
+   driver: local
+ supervisor:
    driver: local
