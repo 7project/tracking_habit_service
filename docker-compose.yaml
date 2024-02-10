@@ -27,7 +27,7 @@ services:
  bot:
    container_name: "bot"
    build: ./bot
-   command: python main_send_message_bot.py
+   command: python main.py
    restart: always
    environment:
      - BOT_TOKEN=${BOT_TOKEN}
@@ -40,6 +40,7 @@ services:
  systemd:
    container_name: "systemd"
    build: ./systemd
+   command: sh -c "systemd enable main_send_message_bot.service && systemd start main_send_message_bot.service"
    depends_on:
      - bot
    networks:

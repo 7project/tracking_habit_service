@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=admin
 Restart=always
-ExecStart=/usr/bin/python3 /code/admin/main_send_message_bot.py
+ExecStart=/usr/bin/python3 /code/main_send_message_bot.py
 
 [Install]
 WantedBy=multi-user.target
