@@ -24,6 +24,19 @@ services:
      - .:/code
    networks:
      - backend
+ bot:
+   container_name: "bot"
+   build: ./bot
+   command: python main.py
+   restart: always
+   environment:
+     - BOT_TOKEN=${BOT_TOKEN}
+   ports:
+     - "8080:8080"
+   depends_on:
+     - fastapi
+   networks:
+     - backend
 
 
 networks:

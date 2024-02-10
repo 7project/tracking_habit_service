@@ -20,6 +20,8 @@ pyjwt = "^2.8.0"
 bcrypt = "^4.1.2"
 python-multipart = "^0.0.6"
 jwcrypto = "^1.5.1"
+pytelegrambotapi = "^4.15.4"
+python-dotenv = "^1.0.1"
 
 
 [build-system]
