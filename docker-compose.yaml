@@ -37,12 +37,18 @@ services:
      - fastapi
    networks:
      - backend
+ systemd:
+   container_name: "systemd"
+   build: ./systemd
+   depends_on:
+     - bot
+   networks:
+     - backend
 
 
 networks:
  backend:
    driver: bridge
-
 
 volumes:
  db:
