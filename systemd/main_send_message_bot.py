@@ -1,2 +1,0 @@
-
-print(">>>> START SERVICE SYSTEMD")
