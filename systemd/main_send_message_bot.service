@@ -3,10 +3,12 @@ Description=Habit Taking Service
 After=network.target
 
 [Service]
+WorkingDirectory=/code
 Type=simple
-User=admin
+User=root
 Restart=always
 ExecStart=/usr/bin/python3 /code/main_send_message_bot.py
+StandardOutput=syslog
 
 [Install]
 WantedBy=multi-user.target

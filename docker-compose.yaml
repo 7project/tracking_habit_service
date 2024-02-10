@@ -40,7 +40,9 @@ services:
  systemd:
    container_name: "systemd"
    build: ./systemd
-   command: sh -c "systemd enable main_send_message_bot.service && systemd start main_send_message_bot.service"
+   command: sh -c "service main_send_message_bot.service on && service main_send_message_bot.service start"
+   ports:
+     - "8880:8880"
    depends_on:
      - bot
    networks:
