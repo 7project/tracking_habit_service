@@ -1,2 +1,10 @@
+from datetime import datetime
+from pprint import pprint
 
-print(">>>> START SERVICE SYSTEMD1")
+
+def main():
+    pprint(f">>>> START SERVICE SYSTEMD - {datetime.utcnow()}")
+
+
+if __name__ == "__main__":
+    main()
