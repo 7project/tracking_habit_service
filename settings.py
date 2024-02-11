@@ -10,11 +10,7 @@ DB_NAME = env("DB_NAME")
 DB_USER = env("DB_USER")
 DB_PASS = env("DB_PASS")
 
-# postgresql+asyncpg://postgres:postgres@bd:5432/postgres
-# bd:5432 имя сервиса из docker-compose + порт, на localhost не завелась [docker on windows]
-
 DATABASE_URL = env("DATABASE_URL")
-
 
 path_private_key: Path = Path(__file__).parent / "cert" / "jwt-private.pem"
 path_public_key: Path = Path(__file__).parent / "cert" / "jwt-public.pem"
