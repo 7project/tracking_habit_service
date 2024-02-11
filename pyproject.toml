@@ -3,7 +3,7 @@ name = "tracking-habit-service"
 version = "0.1.0"
 description = "Service for tracking good habits."
 authors = ["User <housechel@mail.ru>"]
-license = "MIT"
+license = "SIL"
 readme = "README.md"
 
 [tool.poetry.dependencies]
