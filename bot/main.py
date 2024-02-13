@@ -1,9 +1,11 @@
-from loader import bot
 import handlers  # noqa
-from utils.set_bot_commands import set_default_commands
-from telebot.handler_backends import BaseMiddleware
+
 from database.db_main import create_db, session
+from telebot import custom_filters
+from telebot.handler_backends import BaseMiddleware
+from loader import bot
 from sqlalchemy.orm import Session
+from utils.set_bot_commands import set_default_commands
 
 
 class Middleware(BaseMiddleware):
@@ -26,4 +28,5 @@ if __name__ == "__main__":
     set_default_commands(bot)
     create_db()
     bot.setup_middleware(Middleware(session))
+    bot.add_custom_filter(custom_filters.StateFilter(bot))
     bot.infinity_polling(timeout=25, long_polling_timeout=10)
