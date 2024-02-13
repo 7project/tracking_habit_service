@@ -35,6 +35,8 @@ services:
      - "8080:8080"
    depends_on:
      - fastapi
+   volumes:
+     - ./bot/database/db/:/code/database/db/
    networks:
      - backend
  supervisor:
@@ -59,4 +61,6 @@ volumes:
  db:
    driver: local
  supervisor:
+   driver: local
+ bot:
    driver: local
