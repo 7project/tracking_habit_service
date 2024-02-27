@@ -1,7 +1,5 @@
 import requests
 
-from fastapi.exceptions import HTTPException
-
 
 def backend_authentication_to_service(user_id: int, name: str, password: str):
     response = get_token(user_id, password)
