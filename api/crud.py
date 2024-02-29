@@ -62,7 +62,7 @@ async def create_habit(user_in: User, session: AsyncSession, habit: CreateHabitS
 
 async def delete_habit(user_in: User, session: AsyncSession, habit: DeleteHabitSchemy):
     print('>>> ', user_in)
-    statement = select(Habit).where(Habit.id == habit.habit_id)
+    statement = select(Habit).where((Habit.id == habit.habit_id) & (Habit.user_id == user_in.id))
     result: Result = await session.execute(statement)
     habit_ = result.scalar_one_or_none()
 
@@ -72,7 +72,8 @@ async def delete_habit(user_in: User, session: AsyncSession, habit: DeleteHabitS
     )
 
     if habit_ is None:
-        raise unauthorized_exp.detail
+        print(unauthorized_exp.detail)
+        raise unauthorized_exp
 
     statement2 = select(HabitTracking).where(HabitTracking.habit_id == habit.habit_id)
     result2: Result = await session.execute(statement2)
@@ -93,7 +94,8 @@ async def get_user_to_telegram_id(session: AsyncSession, telegram_id):
     user = result.scalar_one_or_none()
 
     if user is None:
-        raise unauthorized_exp.detail
+        print(unauthorized_exp.detail)
+        raise unauthorized_exp
     return user
 
 
@@ -110,6 +112,7 @@ async def get_habits_for_user_id(session, user_id):
     habits = result.scalars()
     print(habits)
     if habits is None:
+        print(unauthorized_exp.detail)
         raise unauthorized_exp
 
     return habits
@@ -127,6 +130,7 @@ async def get_habit_tracking_for_habit_id(session, habit_id):
     habit_tracking = result.scalar_one_or_none()
 
     if habit_tracking is None:
+        print(unauthorized_exp.detail)
         raise unauthorized_exp
 
     return habit_tracking
