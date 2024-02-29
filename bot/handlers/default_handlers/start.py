@@ -59,12 +59,19 @@ def password_get(message: Message, data: dict[str, Session]):
                                                  password=data_["password"])
     # TODO заменить 401 на статус кода из библиотеке status HTTP
     if response.status_code == 401:
-        bot.send_message(message.chat.id, f"Ошибка авторизации на сервере. Нажмите /start для повторной авторизации.")
+        bot.send_message(message.chat.id, f"Ошибка авторизации на сервере. "
+                                          f"Нажмите /start для повторной авторизации.")
+    # TODO заменить 409 на статус кода из библиотеке status HTTP
+    if response.status_code == 409:
+        bot.send_message(message.chat.id, f"Invalid request get_user_to_telegram_id. "
+                                          f"Нажмите /start для повторной авторизации.")
 
+    # TODO проработать этот блок
     print('response', response.json())
-    if response is not None:
-        print('response true', type(response))
+    if response is not None and response.status_code != 409:
+        print('response true>>>>>', type(response))
         result = response.json()
+        print('result json >>>>>', result)
         # TODO вынести этот блок в отдельный слой логики
         # TODO Написать логику проверки что пользователь уже есть в базе
         # TODO start
@@ -84,5 +91,4 @@ def password_get(message: Message, data: dict[str, Session]):
 
 
 # TODO Написать логику на добавления пользователя, без дублирования
-# TODO работает получение токена и запись в бд авторизованному пользователю.
-# TODO обрабатывает ошибку 401 от севера на неверную аутентификацию
+# TODO работает получение токена и запись в бд авторизованному и нового пользователя.
