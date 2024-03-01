@@ -85,7 +85,15 @@ def password_get(message: Message, data: dict[str, Session]):
         result_sql = session.execute(qwerty)
         # TODO end
         # bot.send_message(message.chat.id, f"{result_sql.scalars().all()}")
-        bot.send_message(message.chat.id, f"{result_sql.first()}")
+        first_row = result_sql.first()
+        if first_row:
+            bot.send_message(message.chat.id, f"{first_row}")
+            print('>>>>>>', type(first_row))
+            print('>>>>>>', dir(first_row))
+        print('>>>>>>', first_row[0])
+        telegram_token = first_row[0].token
+        print('telegram_token >>>>>>', telegram_token)
+        bot.send_message(message.chat.id, f"{telegram_token}")
 
     bot.delete_state(message.from_user.id, message.chat.id)
 
