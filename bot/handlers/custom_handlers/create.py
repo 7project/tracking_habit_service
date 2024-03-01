@@ -59,3 +59,5 @@ def description_handler(message: Message, data: dict[str, Session]):
                                           f"{response.json()['name_habit']}. - Добавлена.")
     else:
         bot.send_message(message.chat.id, f"Привычка не добавлена! Ответ сервера: {response.json()}")
+
+    bot.delete_state(message.from_user.id, message.chat.id)
