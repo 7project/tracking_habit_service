@@ -4,8 +4,8 @@ from database.models import UserTelegram
 from sqlalchemy.orm import Session
 
 
-def get_local_token_to_api(session: Session):
-    qwerty = select(UserTelegram).order_by(UserTelegram.id.desc())
+def get_local_token_to_api(session: Session, telegram_id: int):
+    qwerty = select(UserTelegram).where(UserTelegram.telegram_id == telegram_id).order_by(UserTelegram.id.desc())
     result_sql = session.execute(qwerty)
     first_row = result_sql.first()
 

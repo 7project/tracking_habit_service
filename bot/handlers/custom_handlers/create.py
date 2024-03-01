@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 
 @bot.message_handler(commands=["create"])
-def bot_start(message: Message):
+def bot_create(message: Message):
     bot.reply_to(message, f"Команда create, {message.from_user.full_name}!")
     bot.set_state(message.from_user.id, CreateHabit.name_habit, message.chat.id)
     bot.send_message(message.chat.id, 'Enter your name habit >>>')
@@ -38,7 +38,7 @@ def description_handler(message: Message, data: dict[str, Session]):
     # TODO написать функцию вызова запроса к API
     # TODO на создание http://fastapi:8000/api/v1/jwt/habit/create
     # TODO name_habit=data_["name_habit"] description=data_["description"]
-    token = get_local_token_to_api(session=data['session'])
+    token = get_local_token_to_api(session=data['session'], telegram_id=message.from_user.id)
     if token is None:
         bot.send_message(message.chat.id, f"Токен не получен")
     response = create_habit(name_habit=data_["name_habit"], description=data_["description"], token=token)

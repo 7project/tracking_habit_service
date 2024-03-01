@@ -81,7 +81,8 @@ def password_get(message: Message, data: dict[str, Session]):
         session.add(first_user)
         session.commit()
 
-        qwerty = select(UserTelegram).order_by(UserTelegram.id.desc())
+        qwerty = (select(UserTelegram).where(UserTelegram.telegram_id == message.from_user.id)
+                  .order_by(UserTelegram.id.desc()))
         result_sql = session.execute(qwerty)
         # TODO end
         # bot.send_message(message.chat.id, f"{result_sql.scalars().all()}")
