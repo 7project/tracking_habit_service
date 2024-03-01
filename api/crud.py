@@ -57,7 +57,7 @@ async def create_habit(user_in: User, session: AsyncSession, habit: CreateHabitS
     await session.commit()
     await session.refresh(habit_)
 
-    return habit_
+    return habit_, tracking
 
 
 async def delete_habit(user_in: User, session: AsyncSession, habit: DeleteHabitSchemy):

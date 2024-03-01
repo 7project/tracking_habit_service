@@ -6,7 +6,7 @@ from fastapi.exceptions import HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from models.db_main import db_main
-from models.user import User
+from models.user import User, Habit
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.jwt import encode_jwt, decode_jwt, validate_password
@@ -117,18 +117,36 @@ async def auth_user_cheek_me_info(
 
 
 @router.post("/habit/create", response_model=OutHabitSchemy)
-async def auth_user_cheek_me_info(
+async def auth_user_cheek_me_info_(
         habit: CreateHabitSchemy,
         user: User = Depends(get_current_active_auth_user),
         session: AsyncSession = Depends(db_main.session_dependency)
 ):
-    habit = await crud.create_habit(
+    habit, tracking = await crud.create_habit(
         session=session,
         user_in=user,
         habit=habit,
     )
+    # TODO удалить после дебага
+    print("habit >>>>>", habit)
+    print("habit dir>>>>>", dir(habit))
+    print("habit tracking >>>>>", tracking)
+    print("habit tracking dir>>>>>", dir(tracking))
 
-    return habit
+    return OutHabitSchemy(
+        user_id=habit.user_id,
+        name_habit=habit.name_habit,
+        description=habit.description,
+        user=UserOut(
+            name=user.name,
+            telegram_id=user.telegram_id,
+            is_active=user.is_active),
+        tracking=HabitTrackingSchema(
+            habit_id=tracking.habit_id,
+            alert_time=tracking.alert_time,
+            count=tracking.count
+        )
+    )
 
 
 @router.delete("/habit/delete", status_code=status.HTTP_204_NO_CONTENT)

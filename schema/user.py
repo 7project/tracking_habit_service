@@ -20,6 +20,7 @@ class OutHabitSchemy(BaseModel):
     name_habit: str
     description: str
     user: UserOut
+    tracking: HabitTrackingSchema
 
 
 class HabitSchemy(BaseModel):
