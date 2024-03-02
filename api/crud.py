@@ -6,7 +6,7 @@ from sqlalchemy import select, Result
 from fastapi.exceptions import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-from schema.user import CreateUser, CreateHabitSchemy, DeleteHabitSchemy
+from schema.user import CreateUser, CreateHabitSchemy, DeleteHabitSchemy, HabitUpdatePartial, UpdateHabitSchemy
 from services.jwt import hash_password
 
 
@@ -82,6 +82,37 @@ async def delete_habit(user_in: User, session: AsyncSession, habit: DeleteHabitS
 
     await session.delete(habit_)
     await session.commit()
+
+
+async def update_habit(user_in: User, habit_update: HabitUpdatePartial, habit: UpdateHabitSchemy,
+                       session: AsyncSession):
+    statement_habit = (select(Habit).options(selectinload(Habit.tracking)).
+                       where((Habit.id == habit.habit_id) & (Habit.user_id == user_in.id)))
+    result: Result = await session.execute(statement_habit)
+    habit_ = result.scalar_one_or_none()
+
+    unauthorized_exp = HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Invalid update_habit #{habit.habit_id}"
+    )
+
+    if habit_ is None:
+        print(unauthorized_exp.detail)
+        raise unauthorized_exp
+
+    print('habit_.user>>>>> ', habit_.user)
+    print('habit_.tracking>>>>> ', habit_.tracking)
+
+    for name, value in habit_update.model_dump(exclude_unset=True).items():
+        print('setattr update_habit >>>>> ', name, value)
+        if name == 'tracking':
+            for name_out, value_out in value.items():
+                setattr(habit_.tracking, name_out, value_out)
+        else:
+            setattr(habit_, name, value)
+
+    await session.commit()
+    return habit_
 
 
 async def get_user_to_telegram_id(session: AsyncSession, telegram_id):

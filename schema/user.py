@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -9,10 +10,21 @@ class UserOut(BaseModel):
     is_active: bool
 
 
+class UpdateUserOut(BaseModel):
+    name: str | None = None
+    telegram_id: int | None = None
+    is_active: bool | None = None
+
+
 class HabitTrackingSchema(BaseModel):
     habit_id: int
     alert_time: datetime.datetime
     count: int
+
+
+class UpdateHabitTrackingSchema(BaseModel):
+    alert_time: datetime.datetime | None = None
+    count: int | None = None
 
 
 class OutHabitSchemy(BaseModel):
@@ -21,6 +33,12 @@ class OutHabitSchemy(BaseModel):
     description: str
     user: UserOut
     tracking: HabitTrackingSchema
+
+
+class HabitUpdatePartial(BaseModel):
+    name_habit: str | None = None
+    description: str | None = None
+    tracking: Optional[UpdateHabitTrackingSchema] = None
 
 
 class HabitSchemy(BaseModel):
@@ -32,6 +50,10 @@ class HabitSchemy(BaseModel):
 
 
 class DeleteHabitSchemy(BaseModel):
+    habit_id: int
+
+
+class UpdateHabitSchemy(BaseModel):
     habit_id: int
 
 

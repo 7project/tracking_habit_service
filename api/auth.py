@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from services.jwt import encode_jwt, decode_jwt, validate_password
 from schema.jwt import TokenInfo
 from schema.user import UserSchema, HabitSchemy, HabitTrackingSchema, UserOut, CreateHabitSchemy, OutHabitSchemy, \
-    DeleteHabitSchemy
+    DeleteHabitSchemy, UpdateHabitSchemy, HabitUpdatePartial
 
 from typing import TYPE_CHECKING, List
 
@@ -146,6 +146,21 @@ async def auth_user_cheek_me_info_(
             alert_time=tracking.alert_time,
             count=tracking.count
         )
+    )
+
+
+@router.patch("/habit/update")
+async def update_habit_partial(
+        habit: UpdateHabitSchemy,
+        habit_update: HabitUpdatePartial,
+        user: User = Depends(get_current_active_auth_user),
+        session: AsyncSession = Depends(db_main.session_dependency)
+):
+    return await crud.update_habit(
+        session=session,
+        user_in=user,
+        habit=habit,
+        habit_update=habit_update,
     )
 
 
