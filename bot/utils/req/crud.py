@@ -54,6 +54,18 @@ def deleted_habit(habit_id: int, token: str):
     return response
 
 
+def update_habit(json_data: dict, token: str):
+    headers_update = {
+        'accept': 'application/json',
+        'Authorization': 'Bearer {token}'.format(token=token),
+        'Content-Type': 'application/json',
+    }
+
+    response = requests.patch('http://fastapi:8000/api/v1/jwt/habit/update', headers=headers_update, json=json_data)
+    print('update_habit status code >>>> ', response.status_code)
+    return response
+
+
 def get_habits(token: str):
 
     headers_habits = {
