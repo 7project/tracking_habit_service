@@ -35,3 +35,20 @@ def create_habit(name_habit: str, description: str, token: str):
     response = requests.post('http://fastapi:8000/api/v1/jwt/habit/create', headers=headers, json=json_data)
     print('create_habit status code >>>> ', response.status_code)
     return response
+
+
+def deleted_habit(habit_id: int, token: str):
+
+    headers_deleted = {
+        'accept': '*/*',
+        'Authorization': 'Bearer {token}'.format(token=token),
+        'Content-Type': 'application/json',
+        }
+
+    json_data = {
+        'habit_id': habit_id,
+    }
+
+    response = requests.delete('http://fastapi:8000/api/v1/jwt/habit/delete', headers=headers_deleted, json=json_data)
+    print('deleted_habit status code >>>> ', response.status_code)
+    return response
