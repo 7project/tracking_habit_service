@@ -35,15 +35,13 @@ def description_handler(message: Message, data: dict[str, Session]):
     # TODO удаляем сообщение с введенным description
     # bot.delete_message(message.chat.id, message.message_id)
 
-    # TODO написать функцию вызова запроса к API
-    # TODO на создание http://fastapi:8000/api/v1/jwt/habit/create
-    # TODO name_habit=data_["name_habit"] description=data_["description"]
     token = get_local_token_to_api(session=data['session'], telegram_id=message.from_user.id)
     if token is None:
         bot.send_message(message.chat.id, f"Токен не получен")
     response = create_habit(name_habit=data_["name_habit"], description=data_["description"], token=token)
     print('response.json() >>> ', response.json())
     print('response.status_code >>> ', response.status_code)
+
     # TODO заменить 401 на статус кода из библиотеке status HTTP
     if response.status_code == 401:
         bot.send_message(message.chat.id, f"Ошибка авторизации на сервере. "

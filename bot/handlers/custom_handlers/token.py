@@ -23,6 +23,7 @@ def password_get(message: Message, data: dict[str, Session]):
         data_['password'] = message.text
     # TODO удаляем сообщение с введенным именем пользователя
     bot.delete_message(message.chat.id, message.message_id)
+
     response = get_token(telegram_id=message.from_user.id, password=data_['password'])
 
     # TODO заменить 401 на статус кода из библиотеке status HTTP

@@ -14,17 +14,6 @@ def bot_start(message: Message):
     bot.reply_to(message, f"Привет, {message.from_user.full_name}!\n"
                           f"message_id -> {message.message_id}\n"
                           f"user_id -> {message.from_user.id}\n")
-    # TODO переписать логику аутентификации\авторизации ниже по другому
-
-    # TODO Передать на вход функции user_id для запроса авторизованного пользователя
-    # TODO если текущий пользователь есть -> обновить токен
-    # TODO записать токен в таблицу telegram_id token
-
-    # TODO если текущего пользователя нет -> запросить пароль, создать пользователя
-    # TODO обновить токен
-    # TODO записать токен в таблицу telegram_id token
-
-    # TODO написать сообщение что пользователь авторизован\аутентифицирован
 
     bot.set_state(message.from_user.id, AuthUser.name, message.chat.id)
     bot.send_message(message.chat.id, 'Enter your name >>>')

@@ -21,7 +21,7 @@ def create_habit(name_habit: str, description: str, token: str):
 
     headers = {
         'accept': 'application/json',
-        'Authorization': 'Bearer {token}'.format(token=token),  # TODO как динамически вставлять токен в словарь
+        'Authorization': 'Bearer {token}'.format(token=token),
         'Content-Type': 'application/json',
         }
 
