@@ -29,7 +29,7 @@ def password_get(message: Message, data: dict[str, Session]):
     # TODO заменить 401 на статус кода из библиотеке status HTTP
     if response.status_code == 401:
         bot.send_message(message.chat.id, f"Ошибка авторизации на сервере. "
-                                          f"Нажмите /start для повторной авторизации.")
+                                          f"Нажмите /token для повторной авторизации.")
     # TODO заменить 409 на статус кода из библиотеке status HTTP
     if response.status_code == 409:
         bot.send_message(message.chat.id, f"Invalid request get_user_to_telegram_id. "
