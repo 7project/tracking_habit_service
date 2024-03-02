@@ -57,6 +57,11 @@ class UpdateHabitSchemy(BaseModel):
     habit_id: int
 
 
+class CreateHabitSchemyAPI(BaseModel):
+    name_habit: str
+    description: str
+
+
 class CreateHabitSchemy(BaseModel):
     user_id: int
     name_habit: str

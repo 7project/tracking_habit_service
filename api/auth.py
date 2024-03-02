@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from services.jwt import encode_jwt, decode_jwt, validate_password
 from schema.jwt import TokenInfo
 from schema.user import UserSchema, HabitSchemy, HabitTrackingSchema, UserOut, CreateHabitSchemy, OutHabitSchemy, \
-    DeleteHabitSchemy, UpdateHabitSchemy, HabitUpdatePartial
+    DeleteHabitSchemy, UpdateHabitSchemy, HabitUpdatePartial, CreateHabitSchemyAPI
 
 from typing import TYPE_CHECKING, List
 
@@ -118,7 +118,7 @@ async def auth_user_cheek_me_info(
 
 @router.post("/habit/create", response_model=OutHabitSchemy)
 async def auth_user_cheek_me_info_(
-        habit: CreateHabitSchemy,
+        habit: CreateHabitSchemyAPI,
         user: User = Depends(get_current_active_auth_user),
         session: AsyncSession = Depends(db_main.session_dependency)
 ):
@@ -134,7 +134,7 @@ async def auth_user_cheek_me_info_(
     print("habit tracking dir>>>>>", dir(tracking))
 
     return OutHabitSchemy(
-        user_id=habit.user_id,
+        user_id=user.id,
         name_habit=habit.name_habit,
         description=habit.description,
         user=UserOut(
@@ -156,6 +156,7 @@ async def update_habit_partial(
         user: User = Depends(get_current_active_auth_user),
         session: AsyncSession = Depends(db_main.session_dependency)
 ):
+    # TODO настроить схему которую нужно отдавать, в таком виде видно все поля у пользователя
     return await crud.update_habit(
         session=session,
         user_in=user,

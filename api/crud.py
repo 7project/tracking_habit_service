@@ -6,7 +6,7 @@ from sqlalchemy import select, Result
 from fastapi.exceptions import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-from schema.user import CreateUser, CreateHabitSchemy, DeleteHabitSchemy, HabitUpdatePartial, UpdateHabitSchemy
+from schema.user import CreateUser, DeleteHabitSchemy, HabitUpdatePartial, UpdateHabitSchemy, CreateHabitSchemyAPI
 from services.jwt import hash_password
 
 
@@ -37,7 +37,7 @@ async def create_user(user_in: CreateUser, session: AsyncSession):
     return user
 
 
-async def create_habit(user_in: User, session: AsyncSession, habit: CreateHabitSchemy):
+async def create_habit(user_in: User, session: AsyncSession, habit: CreateHabitSchemyAPI):
 
     habit_ = Habit(
         user_id=user_in.id,
