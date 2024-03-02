@@ -52,3 +52,15 @@ def deleted_habit(habit_id: int, token: str):
     response = requests.delete('http://fastapi:8000/api/v1/jwt/habit/delete', headers=headers_deleted, json=json_data)
     print('deleted_habit status code >>>> ', response.status_code)
     return response
+
+
+def get_habits(token: str):
+
+    headers_habits = {
+        'accept': 'application/json',
+        'Authorization': 'Bearer {token}'.format(token=token),
+        }
+
+    response = requests.get('http://fastapi:8000/api/v1/jwt/user/me/habits', headers=headers_habits)
+    print('get_habits status code >>>> ', response.status_code)
+    return response

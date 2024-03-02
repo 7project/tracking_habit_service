@@ -26,21 +26,27 @@ def habit_id_get(message: Message, data: dict[str, Session]):
         bot.send_message(message.chat.id, f"Токен не получен")
 
     response = deleted_habit(habit_id=data_['habit_id'], token=token)
+    # TODO заменить 401 на статус кода из библиотеке status HTTP
     if response.status_code == 401:
         bot.send_message(message.chat.id, f"Ошибка авторизации на сервере. "
                                           f"Нажмите /token для повторной авторизации.")
+
     # TODO заменить 409 на статус кода из библиотеке status HTTP
     if response.status_code == 409:
         bot.send_message(message.chat.id, f"Invalid request get_user_to_telegram_id. "
                                           f"Нажмите /start для повторной авторизации.")
+
+    # TODO заменить 422 на статус кода из библиотеке status HTTP
     if response.status_code == 422:
         bot.send_message(message.chat.id, "422 Validation Error")
 
+    # TODO заменить 405 на статус кода из библиотеке status HTTP
     if response.status_code == 405:
         bot.send_message(message.chat.id, "405 Method Not Allowed")
-
+    # TODO заменить 204 на статус кода из библиотеке status HTTP
     if response.status_code == 204:
         bot.send_message(message.chat.id, f"Habit #{data_['habit_id']} - удалена!")
+    # TODO заменить 404 на статус кода из библиотеке status HTTP
     elif response.status_code == 404:
         bot.send_message(message.chat.id, f"Habit #{data_['habit_id']} - не удалена!")
     else:
