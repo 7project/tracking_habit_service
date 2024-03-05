@@ -11,7 +11,7 @@ from models.user import User, Habit
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.jwt import encode_jwt, decode_jwt, validate_password
 from schema.jwt import TokenInfo
-from schema.user import UserSchema, HabitSchemy, HabitTrackingSchema, UserOut, CreateHabitSchemy, OutHabitSchemy, \
+from schema.user import UserSchema, HabitSchemy, HabitTrackingSchema, UserOut, GetHabitSchemy, OutHabitSchemy, \
     DeleteHabitSchemy, UpdateHabitSchemy, HabitUpdatePartial, CreateHabitSchemyAPI
 
 from typing import TYPE_CHECKING, List
@@ -208,3 +208,31 @@ async def auth_user_cheek_me_info(
             )
         )
     return data_habits
+
+
+@router.post("/user/me/habit", response_model=HabitSchemy)
+async def get_habit_to_habit_id(
+        habit: GetHabitSchemy,
+        user: UserSchema = Depends(get_current_active_auth_user),
+        session: AsyncSession = Depends(db_main.session_dependency)
+):
+    habit_result = await crud.get_habit_for_habit_id(
+        session=session,
+        habit_id=habit.habit_id,
+        user_id=user.id
+    )
+
+    habit_out = HabitSchemy(
+            user_id=habit_result.user_id,
+            name_habit=habit_result.name_habit,
+            description=habit_result.description,
+            user=UserOut(name=habit_result.user.name,
+                         telegram_id=habit_result.user.telegram_id,
+                         is_active=habit_result.user.is_active),
+            tracking=HabitTrackingSchema(
+                         habit_id=habit_result.tracking.habit_id,
+                         alert_time=habit_result.tracking.alert_time,
+                         count=habit_result.tracking.count)
+        )
+
+    return habit_out

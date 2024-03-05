@@ -53,6 +53,10 @@ class DeleteHabitSchemy(BaseModel):
     habit_id: int
 
 
+class GetHabitSchemy(BaseModel):
+    habit_id: int
+
+
 class UpdateHabitSchemy(BaseModel):
     habit_id: int
 

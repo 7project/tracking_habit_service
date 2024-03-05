@@ -165,3 +165,24 @@ async def get_habit_tracking_for_habit_id(session, habit_id):
         raise unauthorized_exp
 
     return habit_tracking
+
+
+async def get_habit_for_habit_id(session, user_id, habit_id):
+    statement_habit = (select(Habit).options(selectinload(Habit.tracking)).
+                       where((Habit.id == habit_id) & (Habit.user_id == user_id)))
+
+    result: Result = await session.execute(statement_habit)
+    habit_ = result.scalar_one_or_none()
+
+    unauthorized_exp = HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Invalid get_habit_for_habit_id#{habit_id}"
+    )
+
+    if habit_ is None:
+        print(unauthorized_exp.detail)
+        raise unauthorized_exp
+
+    print('habit_.user>>>>> ', habit_.user)
+    print('habit_.tracking>>>>> ', habit_.tracking)
+    return habit_
