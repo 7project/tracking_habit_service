@@ -1,4 +1,6 @@
+import datetime
 import json
+from pprint import pprint
 
 from telebot.types import Message
 from sqlalchemy.orm import Session
@@ -27,6 +29,19 @@ def bot_start(message: Message, data: dict[str, Session]):
         data_response = json.loads(response.text)
         if data_response is not None:
             for items in data_response:
-                bot.send_message(message.chat.id, f"Привычка #{items['tracking']['habit_id']} - {items['name_habit']}.")
+                try:
+                    output_string_datatime = datetime.datetime.strptime(items['tracking']['alert_time'],
+                                                                        '%Y-%m-%dT%H:%M:%S.%fZ')
+                    correct_format_datetime = output_string_datatime.strftime('%d %A %Y, %H:%M')
+                    bot.send_message(message.chat.id,
+                                     f"Привычка #{items['tracking']['habit_id']} - {items['name_habit']}.\n"
+                                     f"Описание: {items['description']}.\n"
+                                     f"Время создания\\выполнения: {correct_format_datetime}\n"
+                                     f"Количество выполнения привычки: {items['tracking']['count']}.")
+                except ValueError:
+                    bot.send_message(message.chat.id, f"Не правильный формат времени привычки "
+                                                      f"#{items['tracking']['habit_id']} \n ожидается такой "
+                                                      f"{datetime.datetime.now()}")
+
         else:
             bot.send_message(message.chat.id, f"Список привычек пуст.")
