@@ -1,10 +1,10 @@
 import threading
-import time
+import time as time_
 
 from .send_message import *
 
 
-def run_continuously(interval=60):
+def run_continuously(interval=1):
     """Continuously run, while executing pending jobs at each
     elapsed time interval.
     @return cease_continuous_run: threading. Event which can
@@ -22,7 +22,7 @@ def run_continuously(interval=60):
         def run(cls):
             while not cease_continuous_run.is_set():
                 schedule.run_pending()
-                time.sleep(interval)
+                time_.sleep(interval)
 
     continuous_thread = ScheduleThread()
     continuous_thread.start()

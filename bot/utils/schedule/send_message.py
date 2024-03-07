@@ -46,6 +46,7 @@ def morning_send_message():
                 print('morning_send_message >>>>> ', exp, exp.result, exp.result_json)
 
 
+# TODO уходит в бесконечный цикл
 schedule.every().days.at("11:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
 schedule.every().days.at("15:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
-schedule.every().days.at("01:05", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+schedule.every().days.at("01:25", pytz.timezone("Europe/Moscow")).do(morning_send_message)
