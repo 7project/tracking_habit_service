@@ -23,7 +23,7 @@ def morning_send_message():
         message_text = (f'Время выполнить вашу привычку.\n'
                         f'Обновите свой токен /token\n'
                         f'Нажмите /habits для получения списка привычек,\n'
-                        f'далее /tracking что бы ее выполнить, введите номер привычки #ЧИСЛО >>>')
+                        f'далее /tracking что бы ее выполнить, введите id привычки >>>')
         for telegram_id, data_time in response:
 
             if len(str(telegram_id)) < BLOCKED_MIN_LEN_ID_TELEGRAM:

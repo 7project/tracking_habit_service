@@ -13,8 +13,9 @@ from utils.auth.authentication import backend_authentication_to_service
 def bot_start(message: Message):
     bot.reply_to(message, f"{message.from_user.full_name}!\n"
                           f"Сервис по трекингу полезных привычек приветствует тебя.\n"
+                          f"Время оповещения три раза в день: 11:15 15:15 20:15 МСК\n"
                           f"Если ты в первый раз нужно авторизоваться, введите учетные данные.\n"
-                          f"Или нажми /cancel а потом команду /token")
+                          f"Или аккаунт есть нажми /cancel и потом команду /token")
 
     bot.set_state(message.from_user.id, AuthUser.name, message.chat.id)
     bot.send_message(message.chat.id, 'Введите ваш логин(на Английском) >>>')
