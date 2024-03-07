@@ -10,7 +10,7 @@ from utils.req.crud import get_local_token_to_api, get_habits
 
 @bot.message_handler(commands=["habits"])
 def bot_start(message: Message, data: dict[str, Session]):
-    bot.reply_to(message, f"Команда habits, выводи все ваши привычки, {message.from_user.full_name}!")
+    bot.reply_to(message, f"Команда /habits, выводит все ваши привычки, {message.from_user.full_name}!")
 
     token = get_local_token_to_api(session=data['session'], telegram_id=message.from_user.id)
     if token is None:
@@ -41,7 +41,8 @@ def bot_start(message: Message, data: dict[str, Session]):
                 except ValueError:
                     bot.send_message(message.chat.id, f"Не правильный формат времени привычки "
                                                       f"#{items['tracking']['habit_id']} \n ожидается такой "
-                                                      f"{datetime.datetime.now()}")
+                                                      f"{datetime.datetime.now()}\n"
+                                                      f"Введите новый формат времени изменив ее /update.")
 
         else:
             bot.send_message(message.chat.id, f"Список привычек пуст.")

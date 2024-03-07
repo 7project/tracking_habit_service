@@ -9,7 +9,8 @@ from utils.req.crud import get_local_token_to_api, perform_habit, get_habit
 def bot_start(message: Message):
     bot.reply_to(message, f"Команда tracking - выполнить привычку {message.from_user.full_name}!")
     bot.set_state(message.from_user.id, PerformHabit.habit_id, message.chat.id)
-    bot.send_message(message.chat.id, 'Enter your number id habit to perform, enter number 0 (ZERO) to skip >>>')
+    bot.send_message(message.chat.id, 'Введите id вашей привычки для ее трекинга, для пропуска ввода из команды нажмите'
+                                      ' /cancel >>>')
 
 
 @bot.message_handler(state=PerformHabit.habit_id)

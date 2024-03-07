@@ -11,12 +11,12 @@ from utils.auth.authentication import backend_authentication_to_service
 
 @bot.message_handler(commands=["start"])
 def bot_start(message: Message):
-    bot.reply_to(message, f"Привет, {message.from_user.full_name}!\n"
-                          f"message_id -> {message.message_id}\n"
-                          f"user_id -> {message.from_user.id}\n")
+    bot.reply_to(message, f"{message.from_user.full_name}!\n"
+                          f"Сервис по трекингу полезных привычек приветствует тебя.\n"
+                          f"Если ты в первый раз нужно авторизоваться, введите учетные данные.\n")
 
     bot.set_state(message.from_user.id, AuthUser.name, message.chat.id)
-    bot.send_message(message.chat.id, 'Enter your name >>>')
+    bot.send_message(message.chat.id, 'Введите ваш логин(на Английском) >>>')
 
 
 @bot.message_handler(state=AuthUser.name)
@@ -24,7 +24,7 @@ def name_get(message: Message):
     """
     State 1.
     """
-    bot.send_message(message.chat.id, 'Enter your password >>>')
+    bot.send_message(message.chat.id, 'Введите ваш пароль >>>')
     bot.set_state(message.from_user.id, AuthUser.password, message.chat.id)
     with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
         data['name'] = message.text
@@ -50,10 +50,13 @@ def password_get(message: Message, data: dict[str, Session]):
     if response.status_code == 401:
         bot.send_message(message.chat.id, f"Ошибка авторизации на сервере. "
                                           f"Нажмите /start для повторной авторизации.")
+        bot.delete_state(message.from_user.id, message.chat.id)
+
     # TODO заменить 409 на статус кода из библиотеке status HTTP
     if response.status_code == 409:
         bot.send_message(message.chat.id, f"Invalid request get_user_to_telegram_id. "
                                           f"Нажмите /start для повторной авторизации.")
+        bot.delete_state(message.from_user.id, message.chat.id)
 
     # TODO проработать этот блок
     print('response', response.json())
@@ -77,13 +80,13 @@ def password_get(message: Message, data: dict[str, Session]):
         # bot.send_message(message.chat.id, f"{result_sql.scalars().all()}")
         first_row = result_sql.first()
         if first_row:
-            bot.send_message(message.chat.id, f"{first_row}")
+            # bot.send_message(message.chat.id, f"{first_row}")
             print('>>>>>>', type(first_row))
             print('>>>>>>', dir(first_row))
         print('>>>>>>', first_row[0])
         telegram_token = first_row[0].token
         print('telegram_token >>>>>>', telegram_token)
-        bot.send_message(message.chat.id, f"{telegram_token}")
+        # bot.send_message(message.chat.id, f"{telegram_token}")
 
     bot.delete_state(message.from_user.id, message.chat.id)
 

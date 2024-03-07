@@ -8,9 +8,9 @@ from utils.req.crud import get_local_token_to_api, deleted_habit
 
 @bot.message_handler(commands=["delete"])
 def bot_delete_habit(message: Message):
-    bot.reply_to(message, f"Команда delete удаляет вашу привычку по id, {message.from_user.full_name}!")
+    bot.reply_to(message, f"Команда /delete удаляет вашу привычку по ее id, {message.from_user.full_name}!")
     bot.set_state(message.from_user.id, DeletedHabit.habit_id, message.chat.id)
-    bot.send_message(message.chat.id, 'Enter your number id habit to deleted >>>')
+    bot.send_message(message.chat.id, 'Введите id привычки для удаления, для выхода из команды нажмите /cancel  >>>')
 
 
 @bot.message_handler(state=DeletedHabit.habit_id)

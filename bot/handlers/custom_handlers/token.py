@@ -9,9 +9,10 @@ from sqlalchemy.orm import Session
 
 @bot.message_handler(commands=["token"])
 def bot_token(message: Message):
-    bot.reply_to(message, f"Команда token, {message.from_user.full_name}!")
+    bot.reply_to(message, f"Команда для обновления token'a, {message.from_user.full_name}!")
     bot.set_state(message.from_user.id, UpdateToken.password, message.chat.id)
-    bot.send_message(message.chat.id, 'Enter your password >>>')
+    bot.send_message(message.chat.id, 'Введите текущий пароль от ранее созданного пользователя, '
+                                      'для выхода из команды нажмите /cancel  >>>')
 
 
 @bot.message_handler(state=UpdateToken.password)
@@ -44,8 +45,9 @@ def password_get(message: Message, data: dict[str, Session]):
         session.add(first_user)
         session.commit()
         # TODO End
-        bot.send_message(message.chat.id, f"Токен обновлен! Ответ сервера: {response.json()}")
+        bot.send_message(message.chat.id, f"Токен обновлен!")
     else:
-        bot.send_message(message.chat.id, f"Токен не обновлен! Ответ сервера: {response.json()}")
+        # bot.send_message(message.chat.id, f"Токен не обновлен! Ответ сервера: {response.json()}")
+        bot.send_message(message.chat.id, f"Токен не обновлен!")
 
     bot.delete_state(message.from_user.id, message.chat.id)

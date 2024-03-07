@@ -11,7 +11,8 @@ from sqlalchemy.orm import Session
 def bot_update_habit(message: Message):
     bot.reply_to(message, f"Команда update, {message.from_user.full_name}!")
     bot.set_state(message.from_user.id, UpdateHabit.habit_id, message.chat.id)
-    bot.send_message(message.chat.id, 'Enter your id habit to corrected >>>')
+    bot.send_message(message.chat.id, 'Введите id вышей привычки для ее обновления, для выхода из команды '
+                                      'введите /cancel >>>')
 
 
 @bot.message_handler(state=UpdateHabit.habit_id)
@@ -19,7 +20,7 @@ def habit_id_update_habit(message: Message):
     """
     State 1.
     """
-    bot.send_message(message.chat.id, 'Enter your name habit, enter number 0 (ZERO) to skip  >>>')
+    bot.send_message(message.chat.id, 'Введите новое имя для вашей привычки, для пропуска введите 0(ZERO) >>>')
     bot.set_state(message.from_user.id, UpdateHabit.name_habit, message.chat.id)
     with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
         data['habit_id'] = message.text
@@ -30,7 +31,7 @@ def name_habit_update_habit(message: Message):
     """
     State 2.
     """
-    bot.send_message(message.chat.id, 'Enter your description habit, enter number 0 (ZERO) to skip  >>>')
+    bot.send_message(message.chat.id, 'Введите новое описание вашей привычки, для пропуска введите 0(ZERO)  >>>')
     bot.set_state(message.from_user.id, UpdateHabit.description, message.chat.id)
     with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
         if message.text == '0':
@@ -45,8 +46,8 @@ def description_update_habit(message: Message):
     State 3.
     """
     time_now = datetime.datetime.now()
-    bot.send_message(message.chat.id, f'Enter your alert time habit, exemple -> {time_now} '
-                                      f'enter number 0 (ZERO) to skip >>>')
+    bot.send_message(message.chat.id, f'Введите время создания привычки(ВАЖНО ФОРМАТ), пример -> {time_now} '
+                                      f'для пропуска введите 0(ZERO) >>>')
     bot.set_state(message.from_user.id, UpdateHabit.alert_time, message.chat.id)
     with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
         if message.text == '0':
@@ -61,7 +62,7 @@ def alert_time_update_habit(message: Message):
     State 4.
     """
 
-    bot.send_message(message.chat.id, f'Enter your count completed habit, enter number 0 (ZERO) to skip >>>')
+    bot.send_message(message.chat.id, f'Введите количество выполнения вашей привычки, для пропуска введите 0(ZERO) >>>')
     bot.set_state(message.from_user.id, UpdateHabit.count, message.chat.id)
     with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
         if message.text == '0':

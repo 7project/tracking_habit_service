@@ -7,9 +7,9 @@ from sqlalchemy.orm import Session
 
 @bot.message_handler(commands=["create"])
 def bot_create(message: Message):
-    bot.reply_to(message, f"Команда create, {message.from_user.full_name}!")
+    bot.reply_to(message, f"Команда /create, {message.from_user.full_name}!")
     bot.set_state(message.from_user.id, CreateHabit.name_habit, message.chat.id)
-    bot.send_message(message.chat.id, 'Enter your name habit >>>')
+    bot.send_message(message.chat.id, 'Введите имя вашей привычки, для выхода из команды нажмите /cancel >>>')
 
 
 @bot.message_handler(state=CreateHabit.name_habit)
@@ -17,7 +17,7 @@ def name_habit_handler(message: Message):
     """
     State 1.
     """
-    bot.send_message(message.chat.id, 'Enter your description habit >>>')
+    bot.send_message(message.chat.id, 'Введите описание вашей привычки >>>')
     bot.set_state(message.from_user.id, CreateHabit.description, message.chat.id)
     with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
         data['name_habit'] = message.text
