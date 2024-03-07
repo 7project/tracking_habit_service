@@ -14,7 +14,10 @@ def get_all_number_chat_id_and_time_traking_habit():
     else:
         cursor = conn.cursor()
         cursor.execute("""SELECT
+            h.id,
             u.telegram_id AS telegram_id,
+            h.name_habit AS name,
+            hi.count AS count_tracking,
             hi.alert_time AS data
         FROM
             users u

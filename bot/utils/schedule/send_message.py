@@ -18,23 +18,28 @@ def morning_send_message():
     print('<<<<<< START morning_send_message >>>>')
     print(BLOCKED_ID_TELEGRAM)
     response = get_all_number_chat_id_and_time_traking_habit()
+    print('<<<<<< LEN  response get_all_number_chat_id_and_time_traking_habit>>>>', len(response))
     if len(response) != 0:
         # TODO Получить сообщение из get_message и сформировать его
-        message_text = (f'Время выполнить вашу привычку.\n'
-                        f'Обновите свой токен /token\n'
-                        f'Нажмите /habits для получения списка привычек,\n'
-                        f'далее /tracking что бы ее выполнить, введите id привычки >>>')
-        for telegram_id, data_time in response:
+
+        for habit_id, telegram_id, name_habits, count_tracking, data_time in response:
 
             if len(str(telegram_id)) < BLOCKED_MIN_LEN_ID_TELEGRAM:
-                print(f'<<<<< SKIP #{telegram_id} schedule >>>>>')
+                print(f'<<<<< SKIP #{telegram_id} {name_habits} {count_tracking} {data_time} schedule >>>>>')
                 continue
             if str(telegram_id) in BLOCKED_ID_TELEGRAM:
-                print(f'<<<<< SKIP #{telegram_id} schedule >>>>>')
+                print(f'<<<<< SKIP #{telegram_id} {name_habits} {count_tracking} {data_time} schedule >>>>>')
                 continue
 
             print(f'<<<<< START send_message #{telegram_id} schedule >>>>>')
             try:
+                message_text = (f'Время выполнить вашу привычку\n'
+                                f'#{habit_id} - {name_habits}.\n'
+                                f'Текущий счетчик выполнений равен = {count_tracking}\n'
+                                f'Время создания {data_time.hour}:{data_time.minute}\n'
+                                f'Нажмите /tracking для фиксации выполнения. Указав id - {habit_id}\n'
+                                f'Нажмите /habits для получения списка привычек,\n'
+                                f'далее /tracking что бы ее выполнить, введите id - {habit_id} привычки.')
                 bot.send_message(telegram_id, message_text)
                 time.sleep(3)
             except telebot.apihelper.ApiTelegramException as exp:
@@ -43,4 +48,4 @@ def morning_send_message():
 
 schedule.every().days.at("11:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
 schedule.every().days.at("15:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
-schedule.every().days.at("20:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+schedule.every().days.at("01:05", pytz.timezone("Europe/Moscow")).do(morning_send_message)

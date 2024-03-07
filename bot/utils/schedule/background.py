@@ -4,7 +4,7 @@ import time
 from .send_message import *
 
 
-def run_continuously(interval=1):
+def run_continuously(interval=60):
     """Continuously run, while executing pending jobs at each
     elapsed time interval.
     @return cease_continuous_run: threading. Event which can
