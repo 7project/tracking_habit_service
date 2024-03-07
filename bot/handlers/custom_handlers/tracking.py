@@ -33,6 +33,8 @@ def tracking_id_habit_get(message: Message, data: dict[str, Session]):
         if habit_response.status_code == 401:
             bot.send_message(message.chat.id, f"Ошибка авторизации на сервере."
                                               f"Нажмите /token для повторной авторизации.")
+            bot.delete_state(message.from_user.id, message.chat.id)
+
         # TODO заменить 404 на статус кода из библиотеке status HTTP
         if habit_response.status_code == 404:
             bot.send_message(message.chat.id, f"Не могу обновить счетчик данной привычки!"
@@ -58,6 +60,7 @@ def tracking_id_habit_get(message: Message, data: dict[str, Session]):
         if perform_response.status_code == 401:
             bot.send_message(message.chat.id, f"Ошибка авторизации на сервере."
                                               f"Нажмите /token для повторной авторизации.")
+            bot.delete_state(message.from_user.id, message.chat.id)
 
         # TODO заменить 409 на статус кода из библиотеке status HTTP
         if perform_response.status_code == 409:

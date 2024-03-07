@@ -5,6 +5,8 @@ from telebot import custom_filters
 from telebot.handler_backends import BaseMiddleware
 from loader import bot
 from sqlalchemy.orm import Session
+
+from utils.schedule.background import run_continuously
 from utils.set_bot_commands import set_default_commands
 
 
@@ -29,4 +31,6 @@ if __name__ == "__main__":
     create_db()
     bot.setup_middleware(Middleware(session))
     bot.add_custom_filter(custom_filters.StateFilter(bot))
+    # start schedule
+    run_continuously()
     bot.infinity_polling(timeout=25, long_polling_timeout=10)
