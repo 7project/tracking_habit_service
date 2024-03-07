@@ -38,11 +38,13 @@ def habit_id_get(message: Message, data: dict[str, Session]):
 
     # TODO заменить 422 на статус кода из библиотеке status HTTP
     if response.status_code == 422:
-        bot.send_message(message.chat.id, "422 Validation Error")
+        print('habit_id_get delete - 422 Validation Error')
+        # bot.send_message(message.chat.id, "422 Validation Error")
 
     # TODO заменить 405 на статус кода из библиотеке status HTTP
     if response.status_code == 405:
-        bot.send_message(message.chat.id, "405 Method Not Allowed")
+        print('habit_id_get delete - 405 Method Not Allowed')
+        # bot.send_message(message.chat.id, "405 Method Not Allowed")
     # TODO заменить 204 на статус кода из библиотеке status HTTP
     if response.status_code == 204:
         bot.send_message(message.chat.id, f"Habit #{data_['habit_id']} - удалена!")
@@ -50,7 +52,6 @@ def habit_id_get(message: Message, data: dict[str, Session]):
     elif response.status_code == 404:
         bot.send_message(message.chat.id, f"Habit #{data_['habit_id']} - не удалена!")
     else:
-        bot.send_message(message.chat.id, f"Привычка #{data_['habit_id']} - не удалена! "
-                                          f"Ответ сервера: {response.json()}")
+        bot.send_message(message.chat.id, f"Привычка #{data_['habit_id']} - не удалена! ")
 
     bot.delete_state(message.from_user.id, message.chat.id)
