@@ -45,7 +45,7 @@ def password_get(message: Message, data: dict[str, Session]):
         session.add(first_user)
         session.commit()
         # TODO End
-        bot.send_message(message.chat.id, f"Токен обновлен!")
+        bot.send_message(message.chat.id, f"Токен обновлен! Введите /habits чтобы получить список ваших привычек.")
     else:
         # bot.send_message(message.chat.id, f"Токен не обновлен! Ответ сервера: {response.json()}")
         bot.send_message(message.chat.id, f"Токен не обновлен!")
