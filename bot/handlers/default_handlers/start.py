@@ -14,8 +14,9 @@ def bot_start(message: Message):
     bot.reply_to(message, f"{message.from_user.full_name}!\n"
                           f"Сервис по трекингу полезных привычек приветствует тебя.\n"
                           f"Время оповещения три раза в день: 11:15 15:15 20:15 МСК\n"
-                          f"Если ты в первый раз нужно авторизоваться, введите учетные данные.\n"
-                          f"Или аккаунт есть нажми /cancel и потом команду /token")
+                          f"В первый раз нужно авторизоваться, введи учетные данные ниже, придумай логин и пароль.\n"
+                          f"Если аккаунт есть нажми /cancel для выхода из состояния команды и потом команду "
+                          f"/token для обновления токена.")
 
     bot.set_state(message.from_user.id, AuthUser.name, message.chat.id)
     bot.send_message(message.chat.id, 'Введите ваш логин(на Английском) >>>')
@@ -88,7 +89,10 @@ def password_get(message: Message, data: dict[str, Session]):
         print('>>>>>>', first_row[0])
         telegram_token = first_row[0].token
         print('telegram_token >>>>>>', telegram_token)
-        # bot.send_message(message.chat.id, f"{telegram_token}")
+        bot.send_message(message.chat.id, f"Ваш токен обновлен.\n"
+                                          f"Создание привычки /create\n"
+                                          f"Список привычек /habits\n"
+                                          f"Список команд /help.")
 
     bot.delete_state(message.from_user.id, message.chat.id)
 

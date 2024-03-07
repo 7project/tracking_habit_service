@@ -38,8 +38,9 @@ def tracking_id_habit_get(message: Message, data: dict[str, Session]):
 
         # TODO заменить 404 на статус кода из библиотеке status HTTP
         if habit_response.status_code == 404:
-            bot.send_message(message.chat.id, f"Не могу обновить счетчик данной привычки!"
-                                              f"Проверить номер привычки {data_['habit_id']} из вашего списка.")
+            bot.send_message(message.chat.id, f"Не могу обновить счетчик данной привычки!\n"
+                                              f"Проверьте есть ли id #{data_['habit_id']} данной привычки в вашем "
+                                              f"списке /habits.")
             bot.delete_state(message.from_user.id, message.chat.id)
 
         habit_count = habit_response.json()['tracking']['count']
@@ -75,7 +76,8 @@ def tracking_id_habit_get(message: Message, data: dict[str, Session]):
         if perform_response.status_code == 200:
             bot.send_message(message.chat.id, f"Счетчик привычки #{perform_response.json()['tracking']['habit_id']}: "
                                               f"{perform_response.json()['name_habit']}. - Увеличен.\n"
-                                              f"Количество выполнений: {perform_response.json()['tracking']['count']}.")
+                                              f"Количество выполнений: {perform_response.json()['tracking']['count']}.\n"
+                                              f"Просмотреть список всех привычек /habits.")
         else:
             bot.send_message(message.chat.id, f"Счетчик не увеличен! Ответ сервера: {perform_response.json()}")
 
