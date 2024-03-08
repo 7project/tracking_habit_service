@@ -12,7 +12,7 @@ def bot_update_habit(message: Message):
     bot.reply_to(message, f"Команда update, {message.from_user.full_name}!")
     bot.set_state(message.from_user.id, UpdateHabit.habit_id, message.chat.id)
     bot.send_message(message.chat.id, 'Введите id вышей привычки для ее обновления, для выхода из команды '
-                                      'введите /cancel >>>')
+                                      'нажмите /cancel >>>')
 
 
 @bot.message_handler(state=UpdateHabit.habit_id)

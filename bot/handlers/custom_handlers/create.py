@@ -51,7 +51,6 @@ def description_handler(message: Message, data: dict[str, Session]):
         bot.send_message(message.chat.id, f"Invalid request get_user_to_telegram_id. "
                                           f"Нажмите /start для повторной авторизации.")
 
-    # bot.send_message(message.chat.id, f"{response.json()}")
     if response.status_code == 200:
         bot.send_message(message.chat.id, f"Привычка #{response.json()['tracking']['habit_id']}: "
                                           f"{response.json()['name_habit']}. - Добавлена.")

@@ -11,10 +11,7 @@ class UserTelegram(Base):
     telegram_id: Mapped[int]
     token: Mapped[str]
 
+    # TODO после дебага убрать отображение токена
     def __repr__(self):
         return (f"<UserTelegram id ={self.id} telegram_id={self.telegram_id}"
                 f"token={self.token}>")
-
-# TODO после дебага убрать отображение токена
-
-
