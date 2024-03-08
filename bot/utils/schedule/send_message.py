@@ -7,9 +7,11 @@ from database.schedule.get_data_schedule import get_all_number_chat_id_and_time_
 from loader import bot
 from .create_message import get_message
 
-BLOCKED_ID_TELEGRAM = [BLOCKED_ID_TELEGRAM_USER1,
-                       BLOCKED_ID_TELEGRAM_USER2,
-                       BLOCKED_ID_TELEGRAM_USER3]
+BLOCKED_ID_TELEGRAM = [
+                       # BLOCKED_ID_TELEGRAM_USER1,
+                       # BLOCKED_ID_TELEGRAM_USER2,
+                       # BLOCKED_ID_TELEGRAM_USER3
+                       ]
 
 BLOCKED_MIN_LEN_ID_TELEGRAM = 7
 
@@ -33,7 +35,9 @@ def morning_send_message():
 
             print(f'<<<<< START send_message #{telegram_id} schedule >>>>>')
             try:
-                message_text = (f'Время выполнить вашу привычку\n'
+                # if len(str(data_time.minute)) == 1:
+                #     data_time.minute = f'0{data_time.minute}'
+                message_text = (f'Время выполнить вашу привычку:\n'
                                 f'#{habit_id} - {name_habits}.\n'
                                 f'Текущий счетчик выполнений равен = {count_tracking}\n'
                                 f'Время создания {data_time.hour}:{data_time.minute}\n'
@@ -46,7 +50,10 @@ def morning_send_message():
                 print('morning_send_message >>>>> ', exp, exp.result, exp.result_json)
 
 
-# TODO уходит в бесконечный цикл
-schedule.every().days.at("11:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
-schedule.every().days.at("15:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
-schedule.every().days.at("01:25", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+# TODO Исправлено - уходит в бесконечный цикл
+# TODO правки:
+# TODO поменял days() -> day() как в documentation
+schedule.every().day.at("09:55", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+schedule.every().day.at("11:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+schedule.every().day.at("15:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+schedule.every().day.at("20:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
