@@ -13,10 +13,10 @@ from utils.auth.authentication import backend_authentication_to_service
 def bot_start(message: Message):
     bot.reply_to(message, f"{message.from_user.full_name}!\n"
                           f"Сервис по трекингу полезных привычек приветствует тебя.\n"
-                          f"Время оповещения три раза в день: 11:15 15:15 20:15 МСК\n"
+                          f"Время оповещения в среднем три раза в день: 11:15 15:15 20:15 МСК\n"
                           f"В первый раз нужно авторизоваться, введи учетные данные ниже, придумай логин и пароль.\n"
-                          f"Если аккаунт есть нажми /cancel для выхода из состояния команды и потом команду "
-                          f"/token для обновления токена.")
+                          f"Если аккаунт есть, нажми /cancel для выхода из состояния команды, и потом команду "
+                          f"/token для обновления токена введя пароль от ранее созданного пользователя.")
 
     bot.set_state(message.from_user.id, AuthUser.name, message.chat.id)
     bot.send_message(message.chat.id, 'Введите ваш логин(на Английском) >>>')

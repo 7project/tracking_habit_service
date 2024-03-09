@@ -54,6 +54,7 @@ def description_handler(message: Message, data: dict[str, Session]):
     if response.status_code == 200:
         bot.send_message(message.chat.id, f"Привычка #{response.json()['tracking']['habit_id']}: "
                                           f"{response.json()['name_habit']}. - Добавлена.")
+        bot.send_message(message.chat.id, f"Выведите весь список ваших привычек /habits.")
     else:
         bot.send_message(message.chat.id, f"Привычка не добавлена! Ответ сервера: {response.json()}")
 

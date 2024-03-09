@@ -53,7 +53,7 @@ def bot_start(message: Message, data: dict[str, Session]):
                                                       f"#{items['tracking']['habit_id']} \n ожидается такой "
                                                       f"{datetime.datetime.now()}\n"
                                                       f"Введите новый формат времени изменив ее /update.")
-            bot.send_message(message.chat.id, f"Используйте команду /tracking для выполнении привычки указав ее #id")
+            # bot.send_message(message.chat.id, f"Используйте команду /tracking для выполнении привычки указав ее #id")
         else:
             bot.send_message(message.chat.id, f"Список привычек пуст.")
 
