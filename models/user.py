@@ -40,9 +40,13 @@ class HabitTracking(UserBase):
         DateTime(timezone=True), server_default=func.now()
     )
     count: Mapped[int]
+    total_count_view: Mapped[int] = mapped_column(default=1)
+    total_count_skip: Mapped[int] = mapped_column(default=0)
     habit: Mapped["Habit"] = relationship(back_populates="tracking")
 
     def __repr__(self):
         return (f"<HabitTracking habit_id={self.habit_id} "
                 f"alert_time={self.alert_time} "
-                f"count={self.count}>")
+                f"count={self.count}>"
+                f"total_count_view={self.total_count_view}"
+                f"total_count_skip={self.total_count_skip}")
