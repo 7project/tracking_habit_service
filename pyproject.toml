@@ -24,6 +24,7 @@ pytelegrambotapi = "^4.15.4"
 python-dotenv = "^1.0.1"
 schedule = "^1.2.1"
 pytz = "^2024.1"
+seaborn = "^0.13.2"
 
 
 [build-system]
