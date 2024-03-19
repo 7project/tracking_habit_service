@@ -26,7 +26,8 @@ def morning_send_message():
     if len(response) != 0:
         # TODO Получить сообщение из get_message и сформировать его
 
-        for habit_id, telegram_id, name_habits, count_tracking, data_time, is_active in response:
+        for (habit_id, telegram_id, name_habits, count_tracking, total_count_view, total_count_skip,
+             data_time, is_active) in response:
             if not is_active:
                 print(f'<<<<< NOT ACTIVE SKIP #{telegram_id} {name_habits} {count_tracking} {data_time} schedule >>>>>')
                 continue
@@ -42,11 +43,14 @@ def morning_send_message():
                 markup_inline = InlineKeyboardMarkup()
                 tracking = InlineKeyboardButton(text="Выполнить",
                                                 callback_data=f"schedule_tracking_habit_now_id{habit_id}")
-                skip = InlineKeyboardButton(text="Пропустить", callback_data="schedule_tracking_habit_skip")
+                # TODO отдавать schedule_tracking_habit_skip_id{habit_id}
+                skip = InlineKeyboardButton(text="Пропустить", callback_data=f"schedule_tracking_habit_skip_id{habit_id}")
                 markup_inline.add(tracking, skip)
-                message_text = (f'Время выполнить вашу привычку:\n'
-                                f'#{habit_id} - {name_habits}.\n'
-                                f'Текущий счетчик выполнений равен {count_tracking}\n'
+                message_text = (f'#{habit_id} - {name_habits}.\n'
+                                f'Время выполнить вашу привычку!\n'
+                                f'Количество выполнения привычки: {count_tracking}\n'
+                                f'Количество пропуска привычки: {total_count_view}\n'
+                                f'Количество показов уведомления: {total_count_skip}\n'
                                 # TODO Есть баг с отображением минут 11:5 -> 11:05
                                 # f'Время создания {data_time.hour}:{data_time.minute}\n'
                                 # f'Нажмите /tracking для фиксации выполнения. Указав id - {habit_id}\n'

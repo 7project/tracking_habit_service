@@ -6,7 +6,8 @@ from pprint import pprint
 from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from sqlalchemy.orm import Session
 
-from database.schedule.get_data_schedule import update_tracking_habit_count_add_one
+from database.schedule.get_data_schedule import update_tracking_habit_count_add_one, update_tracking_habit_view_add_one, \
+    update_tracking_habit_skip_add_one
 from loader import bot
 from utils.req.crud import get_local_token_to_api, get_habits
 
@@ -39,21 +40,25 @@ def bot_start(message: Message, data: dict[str, Session]):
                     markup_inline = InlineKeyboardMarkup()
                     tracking = InlineKeyboardButton(text="Выполнить",
                                                     callback_data=f"tracking_habit_now_id{items['tracking']['habit_id']}")
-                    skip = InlineKeyboardButton(text="Пропустить", callback_data="tracking_habit_skip")
+                    skip = InlineKeyboardButton(text="Пропустить",
+                                                callback_data=f"tracking_habit_skip_id{items['tracking']['habit_id']}")
                     markup_inline.add(tracking, skip)
 
                     bot.send_message(message.chat.id,
                                      f"Привычка #{items['tracking']['habit_id']} - {items['name_habit']}.\n"
                                      f"Описание: {items['description']}.\n"
                                      f"Время создания\\выполнения: {correct_format_datetime}\n"
-                                     f"Количество выполнения привычки: {items['tracking']['count']}.",
+                                     f"Количество выполнения привычки: {items['tracking']['count']}.\n"
+                                     f"Количество пропуска привычки: {items['tracking']['total_count_skip']}.\n"
+                                     f"Количество показов уведомления: {items['tracking']['total_count_view']}.",
                                      reply_markup=markup_inline)
                 except ValueError:
                     bot.send_message(message.chat.id, f"Не правильный формат времени привычки "
                                                       f"#{items['tracking']['habit_id']} \n ожидается такой "
                                                       f"{datetime.datetime.now()}\n"
                                                       f"Введите новый формат времени изменив ее /update.")
-            # bot.send_message(message.chat.id, f"Используйте команду /tracking для выполнении привычки указав ее #id")
+                except Exception as exp:
+                    bot.send_message(message.chat.id, f'{exp}')
         else:
             bot.send_message(message.chat.id, f"Список привычек пуст.")
 
@@ -66,7 +71,10 @@ def tracking_habit_now_skip(call):
         print("tracking_habit_now_id  call.data >>>>", call.data)
         # TODO Написать логику выполнения привычки запрос к базе на +1
         update_tracking_habit_count_add_one(habit_id)
+        update_tracking_habit_view_add_one(habit_id)
         bot.delete_message(call.message.chat.id, call.message.message_id)
-    elif call.data == "tracking_habit_skip":
+    elif str(call.data).startswith("tracking_habit_skip_id"):
+        habit_id = re.search("tracking_habit_skip_id*?(\d+)", call.data).group(1)
+        update_tracking_habit_skip_add_one(habit_id)
+        update_tracking_habit_view_add_one(habit_id)
         bot.delete_message(call.message.chat.id, call.message.message_id)
-

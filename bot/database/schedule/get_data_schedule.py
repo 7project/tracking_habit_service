@@ -17,6 +17,8 @@ def get_all_number_chat_id_and_time_tracking_habit():
             u.telegram_id AS telegram_id,
             h.name_habit AS name,
             hi.count AS count_tracking,
+            hi.total_count_view AS total_count_view,
+            hi.total_count_skip AS total_count_skip,
             hi.alert_time AS data,
             u.is_active AS is_active
         FROM
@@ -54,4 +56,45 @@ def update_tracking_habit_count_add_one(habit_id):
         cursor.close()
         conn.close()
 
+
+def update_tracking_habit_skip_add_one(habit_id):
+    try:
+        conn = psycopg2.connect(f'{DATABASE_URL_NOT_ASYNC}')
+        cursor = conn.cursor()
+        cursor.execute("""
+                    UPDATE
+                        habittrackings
+                    SET
+                        total_count_skip = total_count_skip + 1 
+                    WHERE
+                        habit_id = {habit_id}
+                    """.format(habit_id=habit_id))
+        conn.commit()
+    except Exception as exp:
+        conn.rollback()
+        print(f'update_tracking_habit_skip_add_one Can`t establish connection to database, error {exp}')
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def update_tracking_habit_view_add_one(habit_id):
+    try:
+        conn = psycopg2.connect(f'{DATABASE_URL_NOT_ASYNC}')
+        cursor = conn.cursor()
+        cursor.execute("""
+                    UPDATE
+                        habittrackings
+                    SET
+                        total_count_view = total_count_view + 1 
+                    WHERE
+                        habit_id = {habit_id}
+                    """.format(habit_id=habit_id))
+        conn.commit()
+    except Exception as exp:
+        conn.rollback()
+        print(f'update_tracking_habit_view_add_one Can`t establish connection to database, error {exp}')
+    finally:
+        cursor.close()
+        conn.close()
 

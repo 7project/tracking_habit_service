@@ -144,7 +144,9 @@ async def auth_user_cheek_me_info_(
         tracking=HabitTrackingSchema(
             habit_id=tracking.habit_id,
             alert_time=tracking.alert_time,
-            count=tracking.count
+            count=tracking.count,
+            total_count_view=tracking.total_count_view,
+            total_count_skip=tracking.total_count_skip
         )
     )
 
@@ -204,7 +206,10 @@ async def auth_user_cheek_me_info(
                 tracking=HabitTrackingSchema(
                              habit_id=habit_tracking_result.habit_id,
                              alert_time=habit_tracking_result.alert_time,
-                             count=habit_tracking_result.count)
+                             count=habit_tracking_result.count,
+                             total_count_view=habit_tracking_result.total_count_view,
+                             total_count_skip=habit_tracking_result.total_count_skip,
+                )
             )
         )
     return data_habits
@@ -232,7 +237,10 @@ async def get_habit_to_habit_id(
             tracking=HabitTrackingSchema(
                          habit_id=habit_result.tracking.habit_id,
                          alert_time=habit_result.tracking.alert_time,
-                         count=habit_result.tracking.count)
+                         count=habit_result.tracking.count,
+                         total_count_view=habit_result.tracking.total_count_view,
+                         total_count_skip=habit_result.tracking.total_count_skip,
+            )
         )
 
     return habit_out

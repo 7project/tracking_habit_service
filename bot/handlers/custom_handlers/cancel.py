@@ -1,7 +1,8 @@
 from telebot.types import Message
 import re
 
-from database.schedule.get_data_schedule import update_tracking_habit_count_add_one
+from database.schedule.get_data_schedule import update_tracking_habit_count_add_one, update_tracking_habit_skip_add_one, \
+    update_tracking_habit_view_add_one
 from loader import bot
 # from handlers.custom_callback_query.callback_handlers import tracking_habit_now_skip  # noqa
 
@@ -25,6 +26,10 @@ def schedule_tracking_habit_now_skip(call):
         print("tracking_habit_now_id  call.data >>>>", call.data)
         # TODO Написать логику выполнения привычки запрос к базе на +1
         update_tracking_habit_count_add_one(habit_id)
+        update_tracking_habit_view_add_one(habit_id)
         bot.delete_message(call.message.chat.id, call.message.message_id)
-    elif call.data == "schedule_tracking_habit_skip":
+    elif str(call.data).startswith("schedule_tracking_habit_skip_id"):
+        habit_id = re.search("sschedule_tracking_habit_skip_id*?(\d+)", call.data).group(1)
+        update_tracking_habit_skip_add_one(habit_id)
+        update_tracking_habit_view_add_one(habit_id)
         bot.delete_message(call.message.chat.id, call.message.message_id)

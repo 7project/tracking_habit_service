@@ -20,11 +20,15 @@ class HabitTrackingSchema(BaseModel):
     habit_id: int
     alert_time: datetime.datetime
     count: int
+    total_count_view: int
+    total_count_skip: int
 
 
 class UpdateHabitTrackingSchema(BaseModel):
     alert_time: datetime.datetime | None = None
     count: int | None = None
+    total_count_view: int | None = None
+    total_count_skip: int | None = None
 
 
 class OutHabitSchemy(BaseModel):
