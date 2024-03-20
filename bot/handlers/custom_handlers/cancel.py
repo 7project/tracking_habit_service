@@ -29,7 +29,7 @@ def schedule_tracking_habit_now_skip(call):
         update_tracking_habit_view_add_one(habit_id)
         bot.delete_message(call.message.chat.id, call.message.message_id)
     elif str(call.data).startswith("schedule_tracking_habit_skip_id"):
-        habit_id = re.search("sschedule_tracking_habit_skip_id*?(\d+)", call.data).group(1)
+        habit_id = re.search("schedule_tracking_habit_skip_id*?(\d+)", call.data).group(1)
         update_tracking_habit_skip_add_one(habit_id)
         update_tracking_habit_view_add_one(habit_id)
         bot.delete_message(call.message.chat.id, call.message.message_id)
