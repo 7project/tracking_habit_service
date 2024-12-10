@@ -1,10 +1,9 @@
-from telebot.types import Message
 import re
+from telebot.types import Message
+from loader import bot
 
 from database.schedule.get_data_schedule import update_tracking_habit_count_add_one, update_tracking_habit_skip_add_one, \
     update_tracking_habit_view_add_one
-from loader import bot
-# from handlers.custom_callback_query.callback_handlers import tracking_habit_now_skip  # noqa
 
 
 # Any state

@@ -1,3 +1,4 @@
+import hashlib
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -11,7 +12,6 @@ class UserTelegram(Base):
     telegram_id: Mapped[int]
     token: Mapped[str]
 
-    # TODO после дебага убрать отображение токена
     def __repr__(self):
-        return (f"<UserTelegram id ={self.id} telegram_id={self.telegram_id}"
-                f"token={self.token}>")
+        return (f"<UserTelegram id ={self.id} "
+                f"telegram_id={hashlib.sha256(str(self.telegram_id).encode()).hexdigest()}")

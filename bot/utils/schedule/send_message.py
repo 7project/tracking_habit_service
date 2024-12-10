@@ -63,7 +63,9 @@ def morning_send_message():
                 print('morning_send_message >>>>> ', exp, exp.result, exp.result_json)
 
 
-schedule.every().day.at("12:45", pytz.timezone("Europe/Moscow")).do(morning_send_message)
-schedule.every().day.at("11:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+schedule.every().day.at("08:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+schedule.every().day.at("10:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+schedule.every().day.at("12:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
 schedule.every().day.at("15:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+schedule.every().day.at("18:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
 schedule.every().day.at("20:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)

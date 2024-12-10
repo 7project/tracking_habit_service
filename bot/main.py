@@ -1,3 +1,7 @@
+import time
+
+import requests.exceptions
+
 import handlers  # noqa
 
 from database.db_main import create_db, session
@@ -33,4 +37,16 @@ if __name__ == "__main__":
     bot.add_custom_filter(custom_filters.StateFilter(bot))
     # start schedule
     run_continuously()
-    bot.infinity_polling(timeout=25, long_polling_timeout=10)
+    while True:
+        try:
+            bot.polling(timeout=25, long_polling_timeout=10)
+
+        except requests.exceptions.HTTPError as e:
+            print(f"{time.strftime('%H:%M:%S', time.localtime())} >>>>> ERROR HTTP >>> {e}")
+
+        except requests.exceptions.ConnectionError as e:
+            print(f"{time.strftime('%H:%M:%S', time.localtime())} >>>>> ERROR Connection >>> {e}")
+
+        except requests.exceptions.Timeout as e:
+            print(f"{time.strftime('%H:%M:%S', time.localtime())} >>>>> ERROR Timeout >>> {e}")
+
