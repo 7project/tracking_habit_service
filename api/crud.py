@@ -120,6 +120,8 @@ async def get_user_to_telegram_id(session: AsyncSession, telegram_id):
         status_code=status.HTTP_409_CONFLICT,
         detail="Invalid request get_user_to_telegram_id"
     )
+    # TODO fix error: Object must be string at lib pyjwt
+    telegram_id = int(telegram_id)
     statement = select(User).where(User.telegram_id == telegram_id)
     result: Result = await session.execute(statement)
     user = result.scalar_one_or_none()

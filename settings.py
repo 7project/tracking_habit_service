@@ -12,8 +12,8 @@ DB_PASS = env("DB_PASS")
 
 DATABASE_URL = env("DATABASE_URL")
 
-path_private_key: Path = Path(__file__).parent / "cert" / "jwt-private.pem"
-path_public_key: Path = Path(__file__).parent / "cert" / "jwt-public.pem"
+path_private_key: Path = Path("/code") / "cert" / "jwt-private.pem"
+path_public_key: Path = Path("/code") / "cert" / "jwt-public.pem"
 algorithm = "RS256"
 expire_minutes = 35
 # expire_timedelta = 5

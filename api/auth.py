@@ -1,6 +1,6 @@
 from __future__ import annotations
 from api import crud
-from jwt.exceptions import InvalidTokenError
+from jwt.exceptions import InvalidTokenError, ExpiredSignatureError
 from fastapi import APIRouter, Depends, Form, status
 from fastapi.exceptions import HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -56,12 +56,23 @@ async def get_current_token_payload(
         credentials: HTTPAuthorizationCredentials = Depends(http_bearer),
 ):
     token = credentials.credentials
+
+    print("1")
     try:
+        print(token, "\n", type(token))
         payload = decode_jwt(token)
-    except InvalidTokenError as exp:
+        print("2")
+    except ExpiredSignatureError as exp:
+        print("4 Error")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"invalid token error - {exp}"
+            detail=f"invalid token error ExpiredSignatureError - {exp}"
+        )
+    except InvalidTokenError as exp:
+        print("3 Error")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"invalid token error InvalidTokenError - {exp}"
         )
     return payload
 
@@ -98,7 +109,7 @@ async def auth_user_issue_jwt(
         user: UserSchema = Depends(validate_auth_user)
 ):
     jwt_payload = {
-        "sub": user.telegram_id,
+        "sub": str(user.telegram_id),
         "username": user.name
     }
 
@@ -127,11 +138,6 @@ async def auth_user_cheek_me_info_(
         user_in=user,
         habit=habit,
     )
-    # TODO удалить после дебага
-    print("habit >>>>>", habit)
-    print("habit dir>>>>>", dir(habit))
-    print("habit tracking >>>>>", tracking)
-    print("habit tracking dir>>>>>", dir(tracking))
 
     return OutHabitSchemy(
         user_id=user.id,

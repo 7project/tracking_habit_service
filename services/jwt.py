@@ -1,4 +1,5 @@
 import bcrypt
+import traceback
 import jwt
 from jwcrypto import jwk
 
@@ -13,7 +14,6 @@ def encode_jwt(
         expire_minutes_: int = expire_minutes,
         expire_timedelta: timedelta | None = None,
 ) -> str:
-
     to_encode = payload.copy()
     now = datetime.utcnow()
     if expire_timedelta:
@@ -21,15 +21,16 @@ def encode_jwt(
     else:
         expire = now + timedelta(minutes=expire_minutes_)
     to_encode.update(
-        iat=now,
-        exp=expire,
-    )
+            iat=now,
+            exp=expire,
+        )
 
     encoded = jwt.encode(
-        to_encode,
-        private_key,
-        algorithm=algorithm_,
-    )
+            to_encode,
+            private_key,
+            algorithm=algorithm_,
+        )
+
     return encoded
 
 
@@ -38,12 +39,16 @@ def decode_jwt(
     public_key: str = path_public_key.read_text(),
     algorithm_: str = algorithm,
 ) -> dict:
-
-    decoded = jwt.decode(
-        token,
-        public_key,
+    try:
+    	decoded = jwt.decode(
+        str(token),
+        str(public_key),
         algorithms=[algorithm_],
     )
+    except Exception as exp:
+         print(f"decode_jwt ERROR  {exp}")
+         traceback.print_exc()
+         raise
     return decoded
 
 
