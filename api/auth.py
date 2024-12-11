@@ -56,20 +56,14 @@ async def get_current_token_payload(
         credentials: HTTPAuthorizationCredentials = Depends(http_bearer),
 ):
     token = credentials.credentials
-
-    print("1")
     try:
-        print(token, "\n", type(token))
         payload = decode_jwt(token)
-        print("2")
     except ExpiredSignatureError as exp:
-        print("4 Error")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"invalid token error ExpiredSignatureError - {exp}"
         )
     except InvalidTokenError as exp:
-        print("3 Error")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"invalid token error InvalidTokenError - {exp}"
