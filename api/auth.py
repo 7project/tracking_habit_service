@@ -102,6 +102,7 @@ async def get_current_active_auth_user(
 async def auth_user_issue_jwt(
         user: UserSchema = Depends(validate_auth_user)
 ):
+    # TODO fix error: Object must be string at lib pyjwt
     jwt_payload = {
         "sub": str(user.telegram_id),
         "username": user.name
