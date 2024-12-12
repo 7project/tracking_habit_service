@@ -12,7 +12,7 @@ from utils.auth.authentication import backend_authentication_to_service
 @bot.message_handler(commands=["start"])
 def bot_start(message: Message):
     bot.reply_to(message, f"{message.from_user.full_name}!\n"
-                          f"Тебя приветствует сервис по трекингу полезных привычек.\nС"
+                          f"Тебя приветствует сервис по трекингу полезных привычек.\n"
                           f"Время оповещения в фиксировано: 08:15 10:15 12:15 15:15 18:15 20:15 21:45 МСК\n"
                           f"В первый раз запустил нужно авторизоваться. Введи учетные данные ниже, придумай логин и пароль.\n"
                           f"Если ранее аккаунт был создан и есть, нажми /cancel для выхода из состояния команды, и введи команду "
