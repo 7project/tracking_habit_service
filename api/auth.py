@@ -30,8 +30,8 @@ async def validate_auth_user(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid user or password"
     )
-    telegram_id: str = str(telegram_id)
-    print('validate_auth_user telegram_id', telegram_id)
+
+    print('validate_auth_user telegram_id', telegram_id, type(telegram_id))
     user = await crud.get_user_to_telegram_id(session=session, telegram_id=telegram_id)
 
     if not user:
@@ -82,7 +82,7 @@ async def get_current_auth_user(
         detail="token not found(telegram_id not found)"
     )
 
-    telegram_id: str | None = payload.get("sub")
+    telegram_id: int | None = int(payload.get("sub"))
     user = await crud.get_user_to_telegram_id(session=session, telegram_id=telegram_id)
     if user:
         return user

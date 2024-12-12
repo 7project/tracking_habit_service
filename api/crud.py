@@ -115,13 +115,13 @@ async def update_habit(user_in: User, habit_update: HabitUpdatePartial, habit: U
     return habit_
 
 
-async def get_user_to_telegram_id(session: AsyncSession, telegram_id: str):
+async def get_user_to_telegram_id(session: AsyncSession, telegram_id):
     unauthorized_exp = HTTPException(
         status_code=status.HTTP_409_CONFLICT,
         detail="Invalid request get_user_to_telegram_id"
     )
-    # TODO fix error: Object must be string at lib pyjwt
-    telegram_id: int = int(telegram_id)
+    # TODO unfix error: Object must be string at lib pyjwt
+
     statement = select(User).where(User.telegram_id == telegram_id)
     result: Result = await session.execute(statement)
     user = result.scalar_one_or_none()
