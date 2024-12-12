@@ -30,7 +30,7 @@ async def validate_auth_user(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid user or password"
     )
-
+    telegram_id: str = str(telegram_id)
     print('validate_auth_user telegram_id', telegram_id, type(telegram_id))
     user = await crud.get_user_to_telegram_id(session=session, telegram_id=telegram_id)
 
