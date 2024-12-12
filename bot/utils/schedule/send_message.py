@@ -69,3 +69,4 @@ schedule.every().day.at("12:15", pytz.timezone("Europe/Moscow")).do(morning_send
 schedule.every().day.at("15:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
 schedule.every().day.at("18:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
 schedule.every().day.at("20:15", pytz.timezone("Europe/Moscow")).do(morning_send_message)
+schedule.every().day.at("21:45", pytz.timezone("Europe/Moscow")).do(morning_send_message)
