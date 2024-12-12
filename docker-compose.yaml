@@ -54,18 +54,6 @@ services:
      - ./bot/database/db/:/code/database/db/
    networks:
      - backend
- supervisor:
-   container_name: "supervisor"
-   build: ./supervisor
-   command: supervisord -c main_send_message_bot.conf
-   ports:
-     - "8880:8880"
-   depends_on:
-     - fastapi
-   volumes:
-     - ./supervisor/logs:/code/logs
-   networks:
-     - backend
 
 
 networks:
